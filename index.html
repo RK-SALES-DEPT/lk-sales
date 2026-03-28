@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" id="favicon-link" type="image/png" href="">
+  <link rel="icon" id="favicon-link" type="image/png" href="https://rk-sales-dept.github.io/lk-sales/v-rk-32.png">
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
@@ -63,31 +63,21 @@
 
     /* Цветная шапка карточки */
     .login-top {
-      background: linear-gradient(135deg, #525FFB 0%, #3D49F0 60%, #6B77FF 100%);
-      padding: 32px 36px 28px;
-      position: relative; overflow: hidden;
+      background: var(--white);
+      padding: 36px 36px 28px;
+      position: relative;
+      border-bottom: 1px solid var(--border);
     }
-    .login-top::before {
-      content:''; position:absolute; right:-30px; top:-30px;
-      width:140px; height:140px; background:rgba(255,255,255,0.07); border-radius:50%;
+
+    /* Логотип Robokassa чёрный */
+    .login-brand { margin-bottom: 28px; }
+    .login-logo-img {
+      height: 26px; width: auto; display: block;
     }
-    .login-top::after {
-      content:''; position:absolute; left:-20px; bottom:-40px;
-      width:100px; height:100px; background:rgba(255,255,255,0.05); border-radius:50%;
-    }
-    .login-brand { display:flex; align-items:center; gap:12px; margin-bottom:24px; position:relative; z-index:1; }
-    .login-brand-icon {
-      width:44px; height:44px; border-radius:12px;
-      background:rgba(255,255,255,0.18); backdrop-filter:blur(8px);
-      display:flex; align-items:center; justify-content:center; flex-shrink:0;
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-    .login-brand-icon img { width:26px; height:26px; border-radius:5px; display:block; }
-    .login-brand-name { font-size:17px; font-weight:800; color:#fff; letter-spacing:-0.4px; }
-    .login-brand-sub  { font-size:10px; font-weight:700; color:rgba(255,255,255,0.65); letter-spacing:0.08em; text-transform:uppercase; margin-top:1px; }
-    .login-headline { position:relative; z-index:1; }
-    .login-headline h1 { font-size:26px; font-weight:800; color:#fff; letter-spacing:-0.6px; margin-bottom:5px; line-height:1.1; }
-    .login-headline p  { font-size:13px; font-weight:500; color:rgba(255,255,255,0.7); }
+
+    .login-headline { }
+    .login-headline h1 { font-size:26px; font-weight:800; color:var(--text); letter-spacing:-0.6px; margin-bottom:6px; line-height:1.15; }
+    .login-headline p  { font-size:13px; font-weight:500; color:var(--muted); }
 
     /* Нижняя часть с полями */
     .login-bottom { padding: 28px 36px 32px; }
@@ -308,18 +298,15 @@
 
     <!-- Цветная шапка -->
     <div class="login-top">
+      <!-- Логотип из репозитория -->
       <div class="login-brand">
-        <div class="login-brand-icon">
-          <img id="logo-login" src="" alt="RK">
-        </div>
-        <div>
-          <div class="login-brand-name">Отдел продаж</div>
-          <div class="login-brand-sub">Robokassa · Sales Dept</div>
-        </div>
+        <img class="login-logo-img"
+             src="https://rk-sales-dept.github.io/lk-sales/logo_robokassa_black.png"
+             alt="Robokassa">
       </div>
       <div class="login-headline">
-        <h1>Добро пожаловать</h1>
-        <p>Личный кабинет для команды продаж</p>
+        <h1>Отдел продаж</h1>
+        <p>Личный кабинет для команды</p>
       </div>
     </div>
 
@@ -348,10 +335,12 @@
   <header class="hub-header">
     <div class="header-left">
       <div class="header-logo">
-        <img id="logo-hub" src="" alt="RK" style="width:28px;height:28px;border-radius:6px;">
+        <img src="https://rk-sales-dept.github.io/lk-sales/logo_robokassa_black.png"
+             alt="Robokassa"
+             style="height:20px;width:auto;display:block;filter:brightness(0) saturate(0);">
+        <div class="header-sep"></div>
         <span class="header-brand">Отдел продаж</span>
       </div>
-      <div class="header-sep"></div>
       <span class="header-pill">Sales Dept</span>
     </div>
     <div class="header-right">
@@ -585,11 +574,8 @@
 </div><!-- /hub-screen -->
 
 <script>
-/* ══ ICON ══ */
-const ICON = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAgACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAABQcIAAb/xAArEAABAgQEBAcBAQAAAAAAAAABAgMABAUGERMxQRIhIsEHCFNhcYGSUbH/xAAXAQADAQAAAAAAAAAAAAAAAAAAAwUH/8QAJBEAAQIFAgcAAAAAAAAAAAAAAQIDAAQFERIhIhMxQVHB0eH/2gAMAwEAAhEDEQA/AOJtS36fb1LalJRhAcCRmvcI43FbknttBgAkgAYk6CND38uthcKUXjVmeo4inNLGg0Lv+gfZ/hja56cl6RKZ2sBoAOp7e4ioQp1doReS96Tn5MBrutuUr1JdlZ2WAWUnJeKMFNrw5EHtvF+uuIabU66tKG0AqUpRwCQNSTsIlPxlvly8bhKJVahSJNRRKp0zDu4R74csdB8mI9Lraq0pTCmNltxJv45n7DnWeCMstY3g1Yzl43CFzSFCkSaguaVpmHZsH3w54aD5EVY02200hppCUNoSEpSkYBIGgAiArRuSUr1JampKZAWUjOZC+pteHMEd94M5z3qufowVSiKrSkvpf2W2gC/nmfkDT/BGOOsPXzF35loVZ9Je6lAGoOJOg2a+9T9Dcwh4xJJJJxJ1MB7ruCn29S3ZubfQHAk5TPEONxWwA77RYkZOXpEphewGpJ6nv6hS1qeXeP/Z';
-document.getElementById('logo-login').src = ICON;
-document.getElementById('logo-hub').src   = ICON;
-document.getElementById('favicon-link').href = ICON;
+/* ══ FAVICON — использует v-rk-32.png из репо ══ */
+document.getElementById('favicon-link').href = 'https://rk-sales-dept.github.io/lk-sales/v-rk-32.png';
 
 /* ══ USERS WITH ROLES ══ */
 const USERS = [
