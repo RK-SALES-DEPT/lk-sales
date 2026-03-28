@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" id="favicon-link" type="image/png" href="">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     :root {
@@ -38,26 +39,71 @@
     #login-screen {
       min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
       background: var(--bg);
-      background-image: radial-gradient(circle, rgba(82,95,251,0.07) 1px, transparent 1px);
-      background-size: 28px 28px;
+      background-image: radial-gradient(circle, rgba(82,95,251,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
     }
-    .login-box { background: var(--white); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 20px 60px rgba(29,37,74,0.11); padding: 40px 36px 36px; width: 100%; max-width: 390px; }
-    .login-logo { display: flex; align-items: center; gap: 11px; margin-bottom: 32px; }
-    .login-logo img { width: 36px; height: 36px; border-radius: 8px; display: block; }
-    .login-logo-text { font-size: 19px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
-    .login-logo-sub  { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 1px; }
-    .login-title { font-size: 23px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
-    .login-sub   { font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 28px; }
-    .field-group { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
-    .field-wrap  { display: flex; flex-direction: column; gap: 6px; }
+    .login-box {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 28px; box-shadow: 0 24px 64px rgba(29,37,74,0.10);
+      width: 100%; max-width: 400px;
+      overflow: hidden;
+    }
+
+    /* Цветная шапка карточки */
+    .login-top {
+      background: linear-gradient(135deg, #525FFB 0%, #3D49F0 60%, #6B77FF 100%);
+      padding: 32px 36px 28px;
+      position: relative; overflow: hidden;
+    }
+    .login-top::before {
+      content:''; position:absolute; right:-30px; top:-30px;
+      width:140px; height:140px; background:rgba(255,255,255,0.07); border-radius:50%;
+    }
+    .login-top::after {
+      content:''; position:absolute; left:-20px; bottom:-40px;
+      width:100px; height:100px; background:rgba(255,255,255,0.05); border-radius:50%;
+    }
+    .login-brand { display:flex; align-items:center; gap:12px; margin-bottom:24px; position:relative; z-index:1; }
+    .login-brand-icon {
+      width:44px; height:44px; border-radius:12px;
+      background:rgba(255,255,255,0.18); backdrop-filter:blur(8px);
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .login-brand-icon img { width:26px; height:26px; border-radius:5px; display:block; }
+    .login-brand-name { font-size:17px; font-weight:800; color:#fff; letter-spacing:-0.4px; }
+    .login-brand-sub  { font-size:10px; font-weight:700; color:rgba(255,255,255,0.65); letter-spacing:0.08em; text-transform:uppercase; margin-top:1px; }
+    .login-headline { position:relative; z-index:1; }
+    .login-headline h1 { font-size:26px; font-weight:800; color:#fff; letter-spacing:-0.6px; margin-bottom:5px; line-height:1.1; }
+    .login-headline p  { font-size:13px; font-weight:500; color:rgba(255,255,255,0.7); }
+
+    /* Нижняя часть с полями */
+    .login-bottom { padding: 28px 36px 32px; }
+    .field-group { display: flex; flex-direction: column; gap: 16px; margin-bottom: 22px; }
+    .field-wrap  { display: flex; flex-direction: column; gap: 7px; }
     .field-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; }
-    .field-input { width: 100%; height: 48px; border: 1.5px solid var(--border); border-radius: var(--r-sm); padding: 0 14px; font-family: var(--font); font-size: 14px; font-weight: 500; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s, box-shadow .15s, background .15s; }
+    .field-input {
+      width: 100%; height: 48px; border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 0 16px; font-family: var(--font); font-size: 14px; font-weight: 500;
+      color: var(--text); background: var(--bg); outline: none;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
     .field-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(82,95,251,0.12); background: var(--white); }
     .field-input.error { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(217,53,71,0.10); }
-    .login-btn { width: 100%; height: 50px; background: var(--blue); border: none; border-radius: var(--r-sm); font-family: var(--font); font-size: 15px; font-weight: 700; color: #fff; cursor: pointer; letter-spacing: -0.2px; box-shadow: 0 8px 22px rgba(82,95,251,0.30); transition: background .15s, transform .1s, box-shadow .15s; }
-    .login-btn:hover { background: var(--blue-h); box-shadow: 0 10px 28px rgba(82,95,251,0.38); }
-    .login-btn:active { transform: scale(0.98); }
-    .login-error { display: none; margin-top: 12px; padding: 10px 14px; background: var(--danger-bg); border: 1px solid rgba(217,53,71,0.2); border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--danger); text-align: center; }
+    .field-input::placeholder { color: #B0B7CE; }
+    .login-btn {
+      width: 100%; height: 50px; background: var(--blue); border: none; border-radius: 12px;
+      font-family: var(--font); font-size: 15px; font-weight: 700; color: #fff; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(82,95,251,0.32);
+      transition: background .15s, transform .1s, box-shadow .15s;
+    }
+    .login-btn:hover  { background: var(--blue-h); box-shadow: 0 8px 26px rgba(82,95,251,0.40); }
+    .login-btn:active { transform: scale(0.985); }
+    .login-error {
+      display: none; margin-top: 12px; padding: 11px 16px;
+      background: var(--danger-bg); border: 1px solid rgba(217,53,71,0.18);
+      border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--danger); text-align: center;
+    }
     .login-error.show { display: block; }
 
     /* ══ HUB ══ */
@@ -247,27 +293,40 @@
 <!-- ════════ LOGIN ════════ -->
 <div id="login-screen">
   <div class="login-box" id="login-box">
-    <div class="login-logo">
-      <img id="logo-login" src="" alt="RK">
-      <div>
-        <div class="login-logo-text">Отдел продаж</div>
-        <div class="login-logo-sub">Robokassa · Sales Dept</div>
+
+    <!-- Цветная шапка -->
+    <div class="login-top">
+      <div class="login-brand">
+        <div class="login-brand-icon">
+          <img id="logo-login" src="" alt="RK">
+        </div>
+        <div>
+          <div class="login-brand-name">Отдел продаж</div>
+          <div class="login-brand-sub">Robokassa · Sales Dept</div>
+        </div>
+      </div>
+      <div class="login-headline">
+        <h1>Добро пожаловать</h1>
+        <p>Личный кабинет для команды продаж</p>
       </div>
     </div>
-    <div class="login-title">Добро пожаловать</div>
-    <div class="login-sub">Введите данные для входа в систему</div>
-    <div class="field-group">
-      <div class="field-wrap">
-        <label class="field-label" for="f-login">Логин</label>
-        <input class="field-input" id="f-login" type="text" placeholder="Введите логин" autocomplete="username">
+
+    <!-- Поля входа -->
+    <div class="login-bottom">
+      <div class="field-group">
+        <div class="field-wrap">
+          <label class="field-label" for="f-login">Логин</label>
+          <input class="field-input" id="f-login" type="text" placeholder="Введите логин" autocomplete="username">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="f-pass">Пароль</label>
+          <input class="field-input" id="f-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
       </div>
-      <div class="field-wrap">
-        <label class="field-label" for="f-pass">Пароль</label>
-        <input class="field-input" id="f-pass" type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
+      <button class="login-btn" onclick="doLogin()">Войти в систему</button>
+      <div class="login-error" id="login-error">Неверный логин или пароль</div>
     </div>
-    <button class="login-btn" onclick="doLogin()">Войти в систему</button>
-    <div class="login-error" id="login-error">Неверный логин или пароль</div>
+
   </div>
 </div>
 
@@ -518,6 +577,7 @@
 const ICON = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAgACADASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAABQcIAAb/xAArEAABAgQEBAcBAQAAAAAAAAABAgMABAUGERMxQRIhIsEHCFNhcYGSUbH/xAAXAQADAQAAAAAAAAAAAAAAAAAAAwUH/8QAJBEAAQIFAgcAAAAAAAAAAAAAAQIDAAQFERIhIhMxQVHB0eH/2gAMAwEAAhEDEQA/AOJtS36fb1LalJRhAcCRmvcI43FbknttBgAkgAYk6CND38uthcKUXjVmeo4inNLGg0Lv+gfZ/hja56cl6RKZ2sBoAOp7e4ioQp1doReS96Tn5MBrutuUr1JdlZ2WAWUnJeKMFNrw5EHtvF+uuIabU66tKG0AqUpRwCQNSTsIlPxlvly8bhKJVahSJNRRKp0zDu4R74csdB8mI9Lraq0pTCmNltxJv45n7DnWeCMstY3g1Yzl43CFzSFCkSaguaVpmHZsH3w54aD5EVY02200hppCUNoSEpSkYBIGgAiArRuSUr1JampKZAWUjOZC+pteHMEd94M5z3qufowVSiKrSkvpf2W2gC/nmfkDT/BGOOsPXzF35loVZ9Je6lAGoOJOg2a+9T9Dcwh4xJJJJxJ1MB7ruCn29S3ZubfQHAk5TPEONxWwA77RYkZOXpEphewGpJ6nv6hS1qeXeP/Z';
 document.getElementById('logo-login').src = ICON;
 document.getElementById('logo-hub').src   = ICON;
+document.getElementById('favicon-link').href = ICON;
 
 /* ══ USERS WITH ROLES ══ */
 const USERS = [
@@ -586,7 +646,21 @@ function doLogin() {
   if (user) {
     currentUser = user;
     sessionStorage.setItem('hub_user', JSON.stringify(user));
+    // Записываем токен доступа на 48 часов — используется инструментами
+    localStorage.setItem('tlm_hub_token', JSON.stringify({
+      user:    user.login,
+      name:    user.name,
+      role:    user.role,
+      expires: Date.now() + 48 * 60 * 60 * 1000
+    }));
     trackLogin(user);
+    // Если пришли с инструмента — вернуть обратно
+    const redirectTo = sessionStorage.getItem('tlm_redirect_after_login');
+    if (redirectTo) {
+      sessionStorage.removeItem('tlm_redirect_after_login');
+      location.href = redirectTo;
+      return;
+    }
     showHub(user);
   } else {
     const box = document.getElementById('login-box');
@@ -639,6 +713,7 @@ function showHub(user) {
 function doLogout() {
   currentUser = null;
   sessionStorage.removeItem('hub_user');
+  localStorage.removeItem('tlm_hub_token'); // сбрасываем токен доступа
   if (visitsChart) { visitsChart.destroy(); visitsChart = null; }
   document.getElementById('hub-screen').style.display   = 'none';
   document.getElementById('login-screen').style.display = 'flex';
