@@ -312,17 +312,19 @@
 
     <!-- Поля входа -->
     <div class="login-bottom">
-      <div class="field-group">
-        <div class="field-wrap">
-          <label class="field-label" for="f-login">Логин</label>
-          <input class="field-input" id="f-login" type="text" placeholder="Введите логин" autocomplete="username">
+      <form onsubmit="doLogin(); return false;" action="#" method="post" autocomplete="on">
+        <div class="field-group">
+          <div class="field-wrap">
+            <label class="field-label" for="f-login">Логин</label>
+            <input class="field-input" id="f-login" type="text" name="username" placeholder="Введите логин" autocomplete="username">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label" for="f-pass">Пароль</label>
+            <input class="field-input" id="f-pass" type="password" name="password" placeholder="••••••••" autocomplete="current-password">
+          </div>
         </div>
-        <div class="field-wrap">
-          <label class="field-label" for="f-pass">Пароль</label>
-          <input class="field-input" id="f-pass" type="password" placeholder="••••••••" autocomplete="current-password">
-        </div>
-      </div>
-      <button class="login-btn" onclick="doLogin()">Войти в систему</button>
+        <button type="submit" class="login-btn">Войти в систему</button>
+      </form>
       <div class="login-error" id="login-error">Неверный логин или пароль</div>
     </div>
 
