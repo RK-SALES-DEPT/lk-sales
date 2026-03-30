@@ -580,21 +580,28 @@
 document.getElementById('favicon-link').href = 'https://rk-sales-dept.github.io/lk-sales/v-rk-32.png';
 
 /* ══ USERS WITH ROLES ══ */
+/* ══ СОЛЬ для хешей ══ */
+const SALT = 'rk-sales-dept-2026';
+
+/* ══ ПОЛЬЗОВАТЕЛИ — пароли захешированы SHA-256 ══ */
 const USERS = [
-  { login: 'alinaprasolova',   pass: 'prasolova',          name: 'Алина Прасолова',      role: 'admin'   },
-  { login: 's.kim',            pass: 'kim2026',             name: 'Сергей Ким',           role: 'manager' },
-  { login: 'n.akulov',         pass: 'akulov2026',          name: 'Никита Акулов',        role: 'manager' },
-  { login: 'v.ulitin',         pass: 'ulitin2026',          name: 'Василий Улитин',       role: 'manager' },
-  { login: 'a.morozov',        pass: 'morozov2026',         name: 'Алексей Морозов',      role: 'manager' },
-  { login: 'k.mikerina',       pass: 'mikerina2026',        name: 'Ксения Микерина',      role: 'manager' },
-  { login: 'a.abilkilyamova',  pass: 'abilkilyamova2026',   name: 'Арина Абилькилямова',  role: 'manager' },
-  { login: 'l.rusanov',        pass: 'rusanov2026',         name: 'Леонид Русанов',       role: 'manager' },
-  { login: 'e.mankova',        pass: 'mankova2026',         name: 'Екатерина Манькова',   role: 'manager' },
-  { login: 'i.rizvanov',       pass: 'rizvanov2026',        name: 'Ильназ Ризванов',      role: 'manager' },
-  { login: 'yu.pevneva',       pass: 'pevneva2026',         name: 'Юлия Певнева',         role: 'manager' },
-  { login: 'v.volina',         pass: 'volina2026',          name: 'Вера Волина',          role: 'manager' },
-  { login: 's.salibekyan',     pass: 'salibekyan2026',      name: 'Степан Салибекян',     role: 'admin'   },
-  { login: 'y.udalova',       pass: 'udalova2026',         name: 'Юлия Удалова',         role: 'admin'   },
+  { login: 'alinaprasolova',  hash: '740ff60e292554317330c9489e207e142eb05367e1f425cc4f6428bdc886fbf6', name: 'Алина Прасолова',     role: 'admin'   },
+  { login: 's.kim',           hash: 'b73f81cd1121a4ba3191b8ab5fa572924a46e7f0deecae53abda2c5a1b0ca681', name: 'Сергей Ким',          role: 'manager' },
+  { login: 'n.akulov',        hash: '6843734ae34c0e76400fe9aa238920a5c298daf3ae8ce329450327aaaea65ce2', name: 'Никита Акулов',       role: 'manager' },
+  { login: 'v.ulitin',        hash: '3dd5f3b034a6de81b7ffb69c729bdc9ee2054d2cd8800983d5454959356b1124', name: 'Василий Улитин',      role: 'manager' },
+  { login: 'a.morozov',       hash: 'b899278898623ba53022c42fe9980995fd6fbd5a3778bc92589a76325a79f604', name: 'Алексей Морозов',     role: 'manager' },
+  { login: 'k.mikerina',      hash: '6ec1240b7a3597c94791b79041c362b829c64962237bfea52449a2deb6ec30b1', name: 'Ксения Микерина',     role: 'manager' },
+  { login: 'a.abilkilyamova', hash: '520d7e68de2d9f998d31575401f53cab863359d0ed6b284098c178354213de7a', name: 'Арина Абилькилямова', role: 'manager' },
+  { login: 'l.rusanov',       hash: '3029525f30de12ec5550546bc3bb7732867602b5a7c9c5fbbc6276bcbe51146a', name: 'Леонид Русанов',      role: 'manager' },
+  { login: 'e.mankova',       hash: '0d4d743dec7b0419f2991b82a458f5ff1786de51006ea3e6f91f0b16c0b97c22', name: 'Екатерина Манькова',  role: 'manager' },
+  { login: 'i.rizvanov',      hash: '239532b5e90383cced77251c75040fa51fdc3f4c4608c1cea38ecd9e054961df', name: 'Ильназ Ризванов',     role: 'manager' },
+  { login: 'yu.pevneva',      hash: '8ba425a9d3f19614de2b8b7c906e676d2a6920767d397ac1f4d71bda27acbb4d', name: 'Юлия Певнева',        role: 'manager' },
+  { login: 'v.volina',        hash: '455790ff8472b66e279d421a2db6a53083d7f01de4f82f6ea31cc67a795ce0ea', name: 'Вера Волина',         role: 'manager' },
+  { login: 's.salibekyan',    hash: '2c19574765301be26c48332754bb615de63545ac52dd084cbe03767a2a9fdf41', name: 'Степан Салибекян',   role: 'admin'   },
+  { login: 'yu.udalova',      hash: 'aa00b7dfd4b9366e5247181822f6a53d26373ad2082b2eb971dd9e1b9fa57b33', name: 'Юлия Удалова',       role: 'admin'   },
+  { login: 'admin',           hash: '83d8d0673134b197da778ab65ad2e32e7326969b56ced2e0c2ad04053f208512', name: 'Администратор',       role: 'admin'   },
+  { login: 'manager',         hash: '5ef30c8336cc12f228a986ca1711d10795b9271563ab088b3985f9663fd0c27e', name: 'Менеджер',            role: 'manager' },
+  { login: 'sales',           hash: 'aa13d01cac384573890f621e3f4be441a765522d0b323ed3210dc2f1c276dcab', name: 'Отдел продаж',        role: 'manager' },
 ];
 
 const TOOL_NAMES = { navigator:'Навигатор ТЛМ', calculator:'Калькулятор продаж', competitor:'Анализ конкурентов' };
@@ -649,10 +656,17 @@ function updateBadges(d) {
 }
 
 /* ══ LOGIN / LOGOUT ══ */
-function doLogin() {
+async function doLogin() {
   const login = document.getElementById('f-login').value.trim();
   const pass  = document.getElementById('f-pass').value;
-  const user  = USERS.find(u => u.login === login && u.pass === pass);
+
+  // Хешируем введённый пароль и сравниваем
+  const msgBuffer  = new TextEncoder().encode(SALT + pass);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray  = Array.from(new Uint8Array(hashBuffer));
+  const hashHex    = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+
+  const user = USERS.find(u => u.login === login && u.hash === hashHex);
   if (user) {
     currentUser = user;
     sessionStorage.setItem('hub_user', JSON.stringify(user));
@@ -913,7 +927,7 @@ if (saved) {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key==='Enter' && document.getElementById('login-screen').style.display!=='none') doLogin();
+  if (e.key==='Enter' && document.getElementById('login-screen').style.display!=='none') { e.preventDefault(); doLogin(); }
 });
 ['f-login','f-pass'].forEach(id => {
   document.getElementById(id).addEventListener('input', ()=>{
