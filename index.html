@@ -628,6 +628,19 @@ const todayKey = () => new Date().toISOString().slice(0,10);
 
 /* ══ TRACK ══ */
 function trackLogin(user) {
+  // Передаём логин в Яндекс.Метрику
+  try {
+    if (typeof ym !== 'undefined') {
+      ym(108288413, 'setUserID', user.login);
+      ym(108288413, 'userParams', {
+        UserID: user.login,
+        login:  user.login,
+        name:   user.name,
+        role:   user.role
+      });
+    }
+  } catch(e) {}
+
   const d = initData();
   const k = todayKey();
   d.visits[k]              = (d.visits[k] || 0) + 1;
@@ -677,11 +690,6 @@ async function doLogin() {
       role:    user.role,
       expires: Date.now() + 48 * 60 * 60 * 1000
     }));
-    // Передаём логин в Яндекс.Метрику
-if (typeof ym !== 'undefined') {
-  ym(108288413, 'setUserID', user.login);
-  ym(108288413, 'userParams', { login: user.login, name: user.name, role: user.role });
-}
     trackLogin(user);
     // Если пришли с инструмента — вернуть обратно
     const redirectTo = sessionStorage.getItem('tlm_redirect_after_login');
