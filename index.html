@@ -315,7 +315,7 @@
 
     <!-- Поля входа -->
     <div class="login-bottom">
-     <form onsubmit="doLogin(); return false;" autocomplete="on">
+      <form onsubmit="doLogin(); return false;" autocomplete="on">
         <div class="field-group">
           <div class="field-wrap">
             <label class="field-label" for="f-login">Логин</label>
@@ -661,12 +661,12 @@ function renderFsLog(docs) {
                  : ev.details.includes('конкурент')   ? 'd-amber' : 'd-gray';
 
     const text = ev.action === 'login'
-      ? \`<strong>\${ev.name || ev.user}</strong> вошёл в хаб\`
-      : \`<strong>\${ev.name || ev.user}</strong> открыл «\${ev.details}»\`;
+      ? `<strong>${ev.name || ev.user}</strong> вошёл в хаб`
+      : `<strong>${ev.name || ev.user}</strong> открыл «${ev.details}»`;
 
     const item = document.createElement('div');
     item.className = 'activity-item';
-    item.innerHTML = \`<div class="a-dot \${dotCls}"></div><div class="a-text">\${text}</div><div class="a-time">\${formatAgo(ts.getTime())}</div>\`;
+    item.innerHTML = `<div class="a-dot ${dotCls}"></div><div class="a-text">${text}</div><div class="a-time">${formatAgo(ts.getTime())}</div>`;
     logEl.appendChild(item);
   });
 }
