@@ -21,6 +21,9 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/108288413" style="position:absolute;left:-9999px;" alt=""/></div></noscript>
   <!-- /Yandex.Metrika counter -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <!-- Firebase SDK v10 (модульный через CDN compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <style>
     :root {
       --blue:      #525FFB;
@@ -576,10 +579,151 @@
 </div><!-- /hub-screen -->
 
 <script>
-/* ══ FAVICON — использует v-rk-32.png из репо ══ */
+/* ══ FAVICON ══ */
 document.getElementById('favicon-link').href = 'https://rk-sales-dept.github.io/lk-sales/v-rk-32.png';
 
-/* ══ USERS WITH ROLES ══ */
+/* ══ FIREBASE INIT ══ */
+const firebaseConfig = {
+  apiKey:            "AIzaSyAzewvuLhDNvFoJeh8VZQAaKpWFjuuVniY",
+  authDomain:        "rk-sales-2026.firebaseapp.com",
+  projectId:         "rk-sales-2026",
+  storageBucket:     "rk-sales-2026.firebasestorage.app",
+  messagingSenderId: "247955813209",
+  appId:             "1:247955813209:web:71db1b103222091c759248",
+  measurementId:     "G-0CB6ECST31"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* ══ FIRESTORE WRITE HELPERS ══ */
+function fsLogLogin(user) {
+  try {
+    db.collection('activity_logs').add({
+      user:      user.login,
+      name:      user.name,
+      action:    'login',
+      details:   '',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch(e) { console.warn('Firestore write error:', e); }
+}
+
+function fsLogTool(user, toolKey) {
+  const toolNames = { navigator:'Навигатор ТЛМ', calculator:'Калькулятор продаж', competitor:'Анализ конкурентов' };
+  try {
+    db.collection('activity_logs').add({
+      user:      user.login,
+      name:      user.name,
+      action:    'open_tool',
+      details:   toolNames[toolKey] || toolKey,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch(e) { console.warn('Firestore write error:', e); }
+}
+
+/* ══ FIRESTORE REALTIME LISTENER ══ */
+let fsUnsubscribe = null;
+
+function startFsListener() {
+  if (fsUnsubscribe) return; // уже слушаем
+  fsUnsubscribe = db.collection('activity_logs')
+    .orderBy('timestamp', 'desc')
+    .limit(50)
+    .onSnapshot(snapshot => {
+      renderFsLog(snapshot.docs);
+      updateFsKpis(snapshot.docs);
+    }, err => {
+      console.warn('Firestore listener error:', err);
+    });
+}
+
+function stopFsListener() {
+  if (fsUnsubscribe) { fsUnsubscribe(); fsUnsubscribe = null; }
+}
+
+function renderFsLog(docs) {
+  const logEl = document.getElementById('activity-list');
+  if (!logEl) return;
+  logEl.innerHTML = '';
+
+  if (!docs || docs.length === 0) {
+    logEl.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0;">Событий пока нет</div>';
+    return;
+  }
+
+  docs.forEach(doc => {
+    const ev = doc.data();
+    const ts = ev.timestamp ? ev.timestamp.toDate() : new Date();
+
+    const dotCls = ev.action === 'login' ? 'd-gray'
+                 : ev.details.includes('Навигатор')   ? 'd-blue'
+                 : ev.details.includes('Калькулятор') ? 'd-green'
+                 : ev.details.includes('конкурент')   ? 'd-amber' : 'd-gray';
+
+    const text = ev.action === 'login'
+      ? \`<strong>\${ev.name || ev.user}</strong> вошёл в хаб\`
+      : \`<strong>\${ev.name || ev.user}</strong> открыл «\${ev.details}»\`;
+
+    const item = document.createElement('div');
+    item.className = 'activity-item';
+    item.innerHTML = \`<div class="a-dot \${dotCls}"></div><div class="a-text">\${text}</div><div class="a-time">\${formatAgo(ts.getTime())}</div>\`;
+    logEl.appendChild(item);
+  });
+}
+
+function updateFsKpis(docs) {
+  // Всего заходов из Firebase
+  const loginDocs  = docs.filter(d => d.data().action === 'login');
+  const toolDocs   = docs.filter(d => d.data().action === 'open_tool');
+
+  // Сегодня
+  const todayStr = new Date().toISOString().slice(0,10);
+  const todayLogins = loginDocs.filter(d => {
+    const ts = d.data().timestamp;
+    if (!ts) return false;
+    return ts.toDate().toISOString().slice(0,10) === todayStr;
+  }).length;
+
+  // Клики по инструментам
+  const navCount  = toolDocs.filter(d => d.data().details.includes('Навигатор')).length;
+  const calcCount = toolDocs.filter(d => d.data().details.includes('Калькулятор')).length;
+  const compCount = toolDocs.filter(d => d.data().details.includes('конкурент')).length;
+  const totalClicks = navCount + calcCount + compCount;
+
+  // Обновляем KPI
+  const elTotal  = document.getElementById('kpi-total');
+  const elToday  = document.getElementById('kpi-today');
+  const elClicks = document.getElementById('kpi-clicks');
+  if (elTotal)  elTotal.textContent  = loginDocs.length;
+  if (elToday)  elToday.textContent  = todayLogins;
+  if (elClicks) elClicks.textContent = totalClicks;
+
+  // Топ инструмент
+  const counts = { 'Навигатор ТЛМ': navCount, 'Калькулятор продаж': calcCount, 'Анализ конкурентов': compCount };
+  const topEntry = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+  const topEmoji = { 'Навигатор ТЛМ':'🧭', 'Калькулятор продаж':'🧮', 'Анализ конкурентов':'⚔️' };
+  const elTop    = document.getElementById('kpi-top');
+  const elTopSub = document.getElementById('kpi-top-sub');
+  if (elTop && topEntry && topEntry[1] > 0) {
+    elTop.textContent    = (topEmoji[topEntry[0]] || '') + ' ' + topEntry[0];
+    elTopSub.textContent = topEntry[1] + ' кликов';
+  }
+
+  // Полосы популярности
+  const maxC = Math.max(1, navCount, calcCount, compCount);
+  const toolMap = { navigator: navCount, calculator: calcCount, competitor: compCount };
+  ['navigator','calculator','competitor'].forEach(t => {
+    const c   = toolMap[t];
+    const pct = Math.round(c / maxC * 100);
+    const pcEl = document.getElementById('pc-'+t);
+    const ppEl = document.getElementById('pp-'+t);
+    const pbEl = document.getElementById('pb-'+t);
+    if (pcEl) pcEl.textContent = c;
+    if (ppEl) ppEl.textContent = totalClicks > 0 ? Math.round(c/totalClicks*100)+'%' : '0%';
+    if (pbEl) pbEl.style.width = pct + '%';
+  });
+}
+
 /* ══ СОЛЬ для хешей ══ */
 const SALT = 'rk-sales-dept-2026';
 
@@ -602,8 +746,8 @@ const USERS = [
   { login: 'admin',           hash: '83d8d0673134b197da778ab65ad2e32e7326969b56ced2e0c2ad04053f208512', name: 'Администратор',       role: 'admin'   },
   { login: 'manager',         hash: '5ef30c8336cc12f228a986ca1711d10795b9271563ab088b3985f9663fd0c27e', name: 'Менеджер',            role: 'manager' },
   { login: 'sales',           hash: 'aa13d01cac384573890f621e3f4be441a765522d0b323ed3210dc2f1c276dcab', name: 'Отдел продаж',        role: 'manager' },
-  { login: 'marketing', hash: '3ca030d85fc3747b195b3024df90e0313fc6e78682422aeef81902a378ef7816', name: 'Отдел маркетинга', role: 'manager' },
-  { login: 'a.ibragimova', hash: 'c94e0e5bd50b88351a2f9a2eecf353931045e1b6d6ef7d8513c48b14b7cdc629', name: 'Алина Ибрагимова', role: 'manager' },
+  { login: 'marketing',       hash: '3ca030d85fc3747b195b3024df90e0313fc6e78682422aeef81902a378ef7816', name: 'Отдел маркетинга',   role: 'manager' },
+  { login: 'a.ibragimova',    hash: 'c94e0e5bd50b88351a2f9a2eecf353931045e1b6d6ef7d8513c48b14b7cdc629', name: 'Алина Ибрагимова',   role: 'manager' },
 ];
 
 const TOOL_NAMES = { navigator:'Навигатор ТЛМ', calculator:'Калькулятор продаж', competitor:'Анализ конкурентов' };
@@ -612,7 +756,7 @@ const TOOLS      = ['navigator','calculator','competitor'];
 let currentUser = null;
 let visitsChart = null;
 
-/* ══ STORAGE ══ */
+/* ══ LOCAL STORAGE (для графика по дням) ══ */
 function getData() {
   try { return JSON.parse(localStorage.getItem('tlm_hub_v2') || '{}'); } catch(e){ return {}; }
 }
@@ -623,42 +767,41 @@ function initData() {
   if (!d.clicks)     d.clicks     = { navigator:0, calculator:0, competitor:0 };
   if (!d.userVisits) d.userVisits = {};
   if (!d.userLast)   d.userLast   = {};
-  if (!d.log)        d.log        = [];
   return d;
 }
 const todayKey = () => new Date().toISOString().slice(0,10);
 
 /* ══ TRACK ══ */
 function trackLogin(user) {
-  // Передаём логин в Яндекс.Метрику
+  // Яндекс.Метрика
   try {
     if (typeof ym !== 'undefined') {
       ym(108288413, 'setUserID', user.login);
-      ym(108288413, 'userParams', {
-        UserID: user.login,
-        login:  user.login,
-        name:   user.name,
-        role:   user.role
-      });
+      ym(108288413, 'userParams', { UserID: user.login, login: user.login, name: user.name, role: user.role });
     }
   } catch(e) {}
 
+  // Firebase
+  fsLogLogin(user);
+
+  // LocalStorage (для графика по дням)
   const d = initData();
   const k = todayKey();
   d.visits[k]              = (d.visits[k] || 0) + 1;
   d.userVisits[user.login] = (d.userVisits[user.login] || 0) + 1;
   d.userLast[user.login]   = Date.now();
-  d.log.unshift({ ts: Date.now(), user: user.name, type: 'login' });
-  if (d.log.length > 80) d.log = d.log.slice(0,80);
   saveData(d);
 }
 
 function trackClick(tool) {
   if (!currentUser) return;
+
+  // Firebase
+  fsLogTool(currentUser, tool);
+
+  // LocalStorage
   const d = initData();
   d.clicks[tool] = (d.clicks[tool] || 0) + 1;
-  d.log.unshift({ ts: Date.now(), user: currentUser.name, type: 'click', tool });
-  if (d.log.length > 80) d.log = d.log.slice(0,80);
   saveData(d);
   updateBadges(d);
 }
@@ -675,7 +818,6 @@ async function doLogin() {
   const login = document.getElementById('f-login').value.trim();
   const pass  = document.getElementById('f-pass').value;
 
-  // Хешируем введённый пароль и сравниваем
   const msgBuffer  = new TextEncoder().encode(SALT + pass);
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
   const hashArray  = Array.from(new Uint8Array(hashBuffer));
@@ -685,7 +827,6 @@ async function doLogin() {
   if (user) {
     currentUser = user;
     sessionStorage.setItem('hub_user', JSON.stringify(user));
-    // Записываем токен доступа на 48 часов — используется инструментами
     localStorage.setItem('tlm_hub_token', JSON.stringify({
       user:    user.login,
       name:    user.name,
@@ -693,7 +834,6 @@ async function doLogin() {
       expires: Date.now() + 48 * 60 * 60 * 1000
     }));
     trackLogin(user);
-    // Если пришли с инструмента — вернуть обратно
     const redirectTo = sessionStorage.getItem('tlm_redirect_after_login');
     if (redirectTo) {
       sessionStorage.removeItem('tlm_redirect_after_login');
@@ -716,30 +856,26 @@ function showHub(user) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('hub-screen').style.display   = 'block';
 
-  /* name & avatar */
   const parts    = user.name.split(' ');
   const initials = parts.map(w=>w[0]).join('').slice(0,2).toUpperCase();
   document.getElementById('h-avatar').textContent = initials;
   document.getElementById('h-name').textContent   = user.name;
 
-  /* role badge */
   const rb = document.getElementById('h-role-badge');
   if (user.role === 'admin') {
-    rb.textContent  = 'Admin';
-    rb.className    = 'role-badge role-admin';
+    rb.textContent = 'Admin';
+    rb.className   = 'role-badge role-admin';
   } else {
-    rb.textContent  = 'Manager';
-    rb.className    = 'role-badge role-manager';
+    rb.textContent = 'Manager';
+    rb.className   = 'role-badge role-manager';
   }
 
-  /* show/hide analytics tab */
   document.getElementById('tab-analytics').style.display = user.role === 'admin' ? '' : 'none';
 
-  /* banner */
   const hour     = new Date().getHours();
   const greeting = hour < 12 ? 'Доброе утро' : hour < 18 ? 'Добрый день' : 'Добрый вечер';
   document.getElementById('b-greeting').textContent = greeting;
-  document.getElementById('b-title').textContent    = `${parts[0]} 👋`;
+  document.getElementById('b-title').textContent    = parts[0] + ' 👋';
   document.getElementById('b-sub').textContent      = user.role === 'admin'
     ? 'Выберите инструмент или откройте аналитику'
     : 'Выберите нужный инструмент';
@@ -747,15 +883,19 @@ function showHub(user) {
   switchTab('tools');
   const d = initData();
   updateBadges(d);
+
+  // Запускаем слушатель Firebase если admin
+  if (user.role === 'admin') startFsListener();
 }
 
 function doLogout() {
+  stopFsListener();
   currentUser = null;
   sessionStorage.removeItem('hub_user');
-  localStorage.removeItem('tlm_hub_token'); // сбрасываем токен доступа
+  localStorage.removeItem('tlm_hub_token');
   if (visitsChart) { visitsChart.destroy(); visitsChart = null; }
-  document.getElementById('hub-screen').style.display   = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('hub-screen').style.display    = 'none';
+  document.getElementById('login-screen').style.display  = 'flex';
   document.getElementById('f-login').value = '';
   document.getElementById('f-pass').value  = '';
   document.getElementById('login-error').classList.remove('show');
@@ -789,42 +929,7 @@ function formatDate(ts) {
 function renderAnalytics() {
   const d = initData();
 
-  /* KPIs */
-  const totalVisits = Object.values(d.visits).reduce((a,b)=>a+b,0);
-  const todayV      = d.visits[todayKey()] || 0;
-  const yesterKey   = new Date(Date.now()-86400000).toISOString().slice(0,10);
-  const yesterV     = d.visits[yesterKey] || 0;
-  const totalClicks = Object.values(d.clicks).reduce((a,b)=>a+b,0);
-
-  document.getElementById('kpi-total').textContent  = totalVisits;
-  document.getElementById('kpi-today').textContent  = todayV;
-  document.getElementById('kpi-clicks').textContent = totalClicks;
-
-  const deltaEl = document.getElementById('kpi-delta');
-  if (yesterV === 0 && todayV === 0) {
-    deltaEl.textContent = 'нет данных';
-    deltaEl.className   = 'kpi-delta delta-same';
-  } else if (yesterV === 0) {
-    deltaEl.textContent = `первый день`;
-    deltaEl.className   = 'kpi-delta delta-same';
-  } else {
-    const diff = todayV - yesterV;
-    deltaEl.textContent = diff > 0 ? `▲ +${diff} vs вчера` : diff < 0 ? `▼ ${Math.abs(diff)} vs вчера` : `= как вчера`;
-    deltaEl.className   = 'kpi-delta ' + (diff > 0 ? 'delta-up' : diff < 0 ? 'delta-down' : 'delta-same');
-  }
-
-  /* Top tool */
-  const top = Object.entries(d.clicks).sort((a,b)=>b[1]-a[1])[0];
-  const topEmoji = { navigator:'🧭', calculator:'🧮', competitor:'⚔️' };
-  if (top && top[1] > 0) {
-    document.getElementById('kpi-top').textContent     = topEmoji[top[0]] + ' ' + (TOOL_NAMES[top[0]] || top[0]);
-    document.getElementById('kpi-top-sub').textContent = top[1] + ' кликов';
-  } else {
-    document.getElementById('kpi-top').textContent     = '—';
-    document.getElementById('kpi-top-sub').textContent = 'кликов пока нет';
-  }
-
-  /* Chart — 14 days */
+  /* Chart — 14 days (из localStorage) */
   const labels = [], values = [];
   for (let i = 13; i >= 0; i--) {
     const dt  = new Date(Date.now() - i*86400000);
@@ -858,7 +963,7 @@ function renderAnalytics() {
         responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          tooltip: { callbacks: { label: c => ` ${c.raw} заход${c.raw===1?'':'ов'}` } }
+          tooltip: { callbacks: { label: c => ' ' + c.raw + ' заход' + (c.raw===1?'':'ов') } }
         },
         scales: {
           x: { grid:{display:false}, ticks:{font:{family:'Geologica',size:10}, color:'#6B7394', maxRotation:45} },
@@ -868,17 +973,7 @@ function renderAnalytics() {
     });
   }
 
-  /* Popularity bars */
-  const maxC = Math.max(1, ...TOOLS.map(t => d.clicks[t]||0));
-  TOOLS.forEach(t => {
-    const c = d.clicks[t] || 0;
-    const pct = Math.round(c/maxC*100);
-    document.getElementById('pc-'+t).textContent  = c;
-    document.getElementById('pp-'+t).textContent  = totalClicks > 0 ? Math.round(c/totalClicks*100)+'%' : '0%';
-    document.getElementById('pb-'+t).style.width  = pct + '%';
-  });
-
-  /* Users table */
+  /* Users table (из localStorage) */
   const tbody = document.getElementById('users-tbody');
   tbody.innerHTML = '';
   const maxUV = Math.max(1, ...USERS.map(u => d.userVisits[u.login]||0));
@@ -891,36 +986,21 @@ function renderAnalytics() {
     const rbCls  = u.role === 'admin' ? 'role-admin' : 'role-manager';
     const rbText = u.role === 'admin' ? 'Admin' : 'Manager';
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><div class="ut-name"><div class="ut-avatar ${avCls}">${ini}</div>${u.name}</div></td>
-      <td><span class="ut-role-badge ${rbCls}">${rbText}</span></td>
-      <td><span class="ut-visits">${v}</span></td>
-      <td><div class="ut-bar"><div class="ut-bar-f" style="width:${pct}%"></div></div></td>
-      <td><span class="ut-last">${lst ? formatDate(lst) : '—'}</span></td>
-    `;
+    tr.innerHTML =
+      '<td><div class="ut-name"><div class="ut-avatar ' + avCls + '">' + ini + '</div>' + u.name + '</div></td>' +
+      '<td><span class="ut-role-badge ' + rbCls + '">' + rbText + '</span></td>' +
+      '<td><span class="ut-visits">' + v + '</span></td>' +
+      '<td><div class="ut-bar"><div class="ut-bar-f" style="width:' + pct + '%"></div></div></td>' +
+      '<td><span class="ut-last">' + (lst ? formatDate(lst) : '—') + '</span></td>';
     tbody.appendChild(tr);
   });
 
-  /* Activity log */
+  // KPI и лента событий обновляются через Firebase onSnapshot автоматически
+  // Если данных ещё нет — покажем заглушку
   const logEl = document.getElementById('activity-list');
-  logEl.innerHTML = '';
-  if (!d.log || !d.log.length) {
-    logEl.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0;">Событий пока нет</div>';
-    return;
+  if (logEl && logEl.children.length === 0) {
+    logEl.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0;">Загрузка данных из Firebase...</div>';
   }
-  d.log.slice(0,25).forEach(ev => {
-    const dotCls = ev.type==='login' ? 'd-gray'
-                 : ev.tool==='navigator'  ? 'd-blue'
-                 : ev.tool==='calculator' ? 'd-green'
-                 : ev.tool==='competitor' ? 'd-amber' : 'd-gray';
-    const text = ev.type==='login'
-      ? `<strong>${ev.user}</strong> вошёл в хаб`
-      : `<strong>${ev.user}</strong> открыл «${TOOL_NAMES[ev.tool]||ev.tool}»`;
-    const item = document.createElement('div');
-    item.className = 'activity-item';
-    item.innerHTML = `<div class="a-dot ${dotCls}"></div><div class="a-text">${text}</div><div class="a-time">${formatAgo(ev.ts)}</div>`;
-    logEl.appendChild(item);
-  });
 }
 
 function refreshAnalytics(btn) {
@@ -934,7 +1014,6 @@ const saved = sessionStorage.getItem('hub_user');
 if (saved) {
   try {
     const savedUser = JSON.parse(saved);
-    // Всегда берём актуальные данные (включая роль) из массива USERS
     const freshUser = USERS.find(u => u.login === savedUser.login);
     if (freshUser) { currentUser = freshUser; showHub(freshUser); }
     else sessionStorage.removeItem('hub_user');
