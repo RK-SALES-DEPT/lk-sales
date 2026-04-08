@@ -300,6 +300,78 @@
     .tools-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
     @media(max-width:900px) { .tools-grid { grid-template-columns:repeat(2,1fr); } }
     @media(max-width:600px) { .tools-grid { grid-template-columns:1fr; } }
+
+    /* ══ USER PROFILE PANEL ══ */
+    .profile-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(24,32,51,0.35); z-index:500;
+      animation:fadeIn .2s ease;
+    }
+    .profile-overlay.open { display:block; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    .profile-panel {
+      position:fixed; top:0; right:0; bottom:0; width:420px; max-width:100vw;
+      background:var(--white); box-shadow:-8px 0 40px rgba(29,37,74,0.12);
+      z-index:501; overflow-y:auto;
+      transform:translateX(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    .profile-panel.open { transform:translateX(0); }
+
+    .profile-header {
+      padding:24px 24px 20px;
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      position:sticky; top:0; background:var(--white); z-index:1;
+    }
+    .profile-avatar-lg {
+      width:52px; height:52px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; font-weight:800; color:#fff;
+    }
+    .profile-info { flex:1; }
+    .profile-name { font-size:18px; font-weight:800; color:var(--text); letter-spacing:-0.3px; margin-bottom:4px; }
+    .profile-meta { display:flex; align-items:center; gap:8px; }
+    .profile-login { font-size:12px; color:var(--muted); font-weight:600; }
+    .profile-close {
+      width:32px; height:32px; border-radius:8px; border:1.5px solid var(--border);
+      background:var(--bg); display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--muted); font-size:16px; flex-shrink:0;
+      transition:.15s;
+    }
+    .profile-close:hover { background:var(--danger-bg); color:var(--danger); border-color:rgba(217,53,71,0.3); }
+
+    .profile-stats {
+      display:grid; grid-template-columns:1fr 1fr 1fr;
+      gap:1px; background:var(--border);
+      border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    }
+    .profile-stat {
+      background:var(--white); padding:16px 12px; text-align:center;
+    }
+    .profile-stat-val  { font-size:22px; font-weight:800; color:var(--text); letter-spacing:-0.5px; }
+    .profile-stat-label{ font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+
+    .profile-section { padding:20px 24px 0; }
+    .profile-section-title {
+      font-size:10px; font-weight:700; color:var(--muted);
+      letter-spacing:0.09em; text-transform:uppercase; margin-bottom:12px;
+    }
+    .profile-event {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 0; border-bottom:1px solid var(--border);
+    }
+    .profile-event:last-child { border-bottom:none; }
+    .profile-event-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+    .profile-event-body { flex:1; }
+    .profile-event-text { font-size:13px; font-weight:500; color:var(--text); line-height:1.4; }
+    .profile-event-time { font-size:11px; color:var(--muted); font-weight:600; margin-top:2px; }
+
+    .profile-empty { font-size:13px; color:var(--muted); padding:12px 0; }
+
+    /* Строка таблицы кликабельна */
+    .users-table tbody tr { cursor:pointer; transition:background .12s; }
+    .users-table tbody tr:hover td { background:rgba(82,95,251,0.03); }
   </style>
 </head>
 <body>
@@ -783,9 +855,10 @@ function startFsListeners() {
   /* Activity logs */
   if (!fsUnsubActivity) {
     fsUnsubActivity = db.collection('activity_logs')
-      .orderBy('timestamp','desc').limit(50)
+      .orderBy('timestamp','desc').limit(200)
       .onSnapshot(snap => {
-        renderFsLog(snap.docs);
+        allFsDocs = snap.docs; // кэшируем все документы для профиля
+        renderFsLog(snap.docs.slice(0,50));
         updateFsKpis(snap.docs);
         updateFsChart(snap.docs);
         updateFsUsersTable(snap.docs);
@@ -1005,6 +1078,8 @@ function updateFsUsersTable(docs) {
     const rbCls  = u.role === 'admin' ? 'role-admin' : 'role-manager';
     const rbText = u.role === 'admin' ? 'Admin' : 'Manager';
     const tr = document.createElement('tr');
+    tr.setAttribute('title', 'Нажмите чтобы посмотреть профиль');
+    tr.onclick = () => openProfile(u.login);
     tr.innerHTML =
       '<td><div class="ut-name"><div class="ut-avatar ' + avCls + '">' + ini + '</div>' + u.name + '</div></td>' +
       '<td><span class="ut-role-badge ' + rbCls + '">' + rbText + '</span></td>' +
@@ -1286,6 +1361,109 @@ function refreshAnalytics(btn) {
   setTimeout(() => icon.classList.remove('spinning'), 500);
 }
 
+
+/* ══ USER PROFILE PANEL ══ */
+let allFsDocs = []; // кэш всех документов из Firebase
+
+function openProfile(login) {
+  const user = USERS.find(u => u.login === login);
+  if (!user) return;
+
+  // Заполняем шапку
+  const ini   = user.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const avCls = user.role === 'admin' ? 'av-admin' : 'av-manager';
+  const rbCls = user.role === 'admin' ? 'role-admin' : 'role-manager';
+
+  const avatarEl = document.getElementById('profile-avatar');
+  avatarEl.textContent = ini;
+  avatarEl.className   = 'profile-avatar-lg ' + avCls;
+
+  document.getElementById('profile-name').textContent  = user.name;
+  document.getElementById('profile-login').textContent = '@' + user.login;
+
+  const rb = document.getElementById('profile-role-badge');
+  rb.textContent = user.role === 'admin' ? 'Admin' : 'Manager';
+  rb.className   = 'ut-role-badge ' + rbCls;
+
+  // Фильтруем события этого пользователя
+  const userDocs = allFsDocs.filter(d => d.data().user === login);
+  const loginEvs = userDocs.filter(d => d.data().action === 'login');
+  const toolEvs  = userDocs.filter(d => d.data().action === 'open_tool');
+  const timeEvs  = userDocs.filter(d => d.data().action === 'time_spent');
+
+  // Суммируем время
+  const totalSec = timeEvs.reduce((sum, d) => sum + (d.data().seconds || 0), 0);
+  const timeStr  = totalSec >= 3600
+    ? Math.round(totalSec/3600) + 'ч'
+    : totalSec >= 60
+    ? Math.round(totalSec/60) + 'м'
+    : totalSec + 'с';
+
+  document.getElementById('ps-logins').textContent = loginEvs.length;
+  document.getElementById('ps-tools').textContent  = toolEvs.length;
+  document.getElementById('ps-time').textContent   = timeStr || '0м';
+
+  // История событий (все кроме time_spent)
+  const eventsEl = document.getElementById('profile-events');
+  const events   = userDocs
+    .filter(d => d.data().action !== 'time_spent')
+    .sort((a,b) => {
+      const ta = a.data().timestamp ? a.data().timestamp.toDate().getTime() : 0;
+      const tb = b.data().timestamp ? b.data().timestamp.toDate().getTime() : 0;
+      return tb - ta;
+    });
+
+  if (events.length === 0) {
+    eventsEl.innerHTML = '<div class="profile-empty">Событий пока нет</div>';
+  } else {
+    eventsEl.innerHTML = '';
+    events.forEach(doc => {
+      const ev  = doc.data();
+      const ts  = ev.timestamp ? ev.timestamp.toDate().getTime() : 0;
+
+      const dotColor = ev.action === 'login'      ? 'var(--muted)'
+                     : ev.action === 'pdf_save'   ? 'var(--ok)'
+                     : ev.action === 'calculate'  ? 'var(--blue)'
+                     : ev.action === 'tab_switch' ? '#C08820'
+                     : 'var(--blue)';
+
+      const actionText = {
+        login:      '🔑 Вошёл в хаб',
+        open_tool:  '🔗 Открыл «' + (ev.details || ev.tool || '') + '»',
+        pdf_save:   '📄 ' + (ev.details || 'Сохранил PDF'),
+        calculate:  '🧮 ' + (ev.details || 'Запустил расчёт'),
+        tab_switch: '🔄 ' + (ev.details || 'Переключил вкладку'),
+      }[ev.action] || ev.action + (ev.details ? ': ' + ev.details : '');
+
+      const item = document.createElement('div');
+      item.className = 'profile-event';
+      item.innerHTML =
+        '<div class="profile-event-dot" style="background:' + dotColor + '"></div>' +
+        '<div class="profile-event-body">' +
+          '<div class="profile-event-text">' + actionText + '</div>' +
+          '<div class="profile-event-time">' + (ts ? formatDate(ts) : '—') + '</div>' +
+        '</div>';
+      eventsEl.appendChild(item);
+    });
+  }
+
+  // Открываем панель
+  document.getElementById('profile-overlay').classList.add('open');
+  document.getElementById('profile-panel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProfile() {
+  document.getElementById('profile-overlay').classList.remove('open');
+  document.getElementById('profile-panel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Закрытие по Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeProfile();
+});
+
 /* ══ INIT ══ */
 const saved = sessionStorage.getItem('hub_user');
 if (saved) {
@@ -1310,6 +1488,46 @@ document.addEventListener('keydown', e => {
   });
 });
 </script>
+
+  <!-- ══ USER PROFILE PANEL ══ -->
+  <div class="profile-overlay" id="profile-overlay" onclick="closeProfile()"></div>
+  <div class="profile-panel" id="profile-panel">
+    <div class="profile-header">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="profile-avatar-lg av-admin" id="profile-avatar">АП</div>
+        <div class="profile-info">
+          <div class="profile-name" id="profile-name">—</div>
+          <div class="profile-meta">
+            <span class="profile-login" id="profile-login">—</span>
+            <span class="ut-role-badge role-manager" id="profile-role-badge">Manager</span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-close" onclick="closeProfile()">✕</div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="ps-logins">0</div>
+        <div class="profile-stat-label">Входов в хаб</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="ps-tools">0</div>
+        <div class="profile-stat-label">Открытий</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="ps-time">0м</div>
+        <div class="profile-stat-label">Время</div>
+      </div>
+    </div>
+
+    <div class="profile-section" style="padding-bottom:24px;">
+      <div class="profile-section-title">История активности</div>
+      <div id="profile-events">
+        <div class="profile-empty">Загрузка...</div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
