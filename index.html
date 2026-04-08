@@ -586,7 +586,8 @@
             <tr>
               <th>Пользователь</th>
               <th>Роль</th>
-              <th>Заходов</th>
+              <th>Входов в хаб</th>
+              <th>Открытий инструментов</th>
               <th>Активность</th>
               <th>Последний визит</th>
             </tr>
@@ -962,22 +963,44 @@ function updateFsUsersTable(docs) {
   if (!tbody) return;
   tbody.innerHTML = '';
 
+  // Считаем входы в хаб
   const loginDocs = docs.filter(d => d.data().action === 'login');
-  const visitMap  = {};
-  const lastMap   = {};
+  // Считаем открытия инструментов
+  const toolDocs  = docs.filter(d => d.data().action === 'open_tool');
+
+  const loginMap = {};  // входы в хаб
+  const toolMap  = {};  // открытия инструментов
+  const lastMap  = {};  // последнее событие
+
   loginDocs.forEach(d => {
     const ev = d.data();
-    visitMap[ev.user] = (visitMap[ev.user] || 0) + 1;
+    loginMap[ev.user] = (loginMap[ev.user] || 0) + 1;
     const ts = ev.timestamp ? ev.timestamp.toDate().getTime() : 0;
     if (!lastMap[ev.user] || ts > lastMap[ev.user]) lastMap[ev.user] = ts;
   });
 
-  const maxV = Math.max(1, ...Object.values(visitMap));
+  toolDocs.forEach(d => {
+    const ev = d.data();
+    toolMap[ev.user] = (toolMap[ev.user] || 0) + 1;
+    const ts = ev.timestamp ? ev.timestamp.toDate().getTime() : 0;
+    if (!lastMap[ev.user] || ts > lastMap[ev.user]) lastMap[ev.user] = ts;
+  });
+
+  // Суммарная активность для полосы
+  const totalMap = {};
+  [...loginDocs, ...toolDocs].forEach(d => {
+    const ev = d.data();
+    totalMap[ev.user] = (totalMap[ev.user] || 0) + 1;
+  });
+
+  const maxV = Math.max(1, ...Object.values(totalMap));
   USERS.forEach(u => {
-    const v   = visitMap[u.login] || 0;
-    const lst = lastMap[u.login];
-    const ini = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const pct = Math.round(v/maxV*100);
+    const logins = loginMap[u.login] || 0;
+    const tools  = toolMap[u.login]  || 0;
+    const total  = logins + tools;
+    const lst    = lastMap[u.login];
+    const ini    = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const pct    = Math.round(total/maxV*100);
     const avCls  = u.role === 'admin' ? 'av-admin' : 'av-manager';
     const rbCls  = u.role === 'admin' ? 'role-admin' : 'role-manager';
     const rbText = u.role === 'admin' ? 'Admin' : 'Manager';
@@ -985,7 +1008,8 @@ function updateFsUsersTable(docs) {
     tr.innerHTML =
       '<td><div class="ut-name"><div class="ut-avatar ' + avCls + '">' + ini + '</div>' + u.name + '</div></td>' +
       '<td><span class="ut-role-badge ' + rbCls + '">' + rbText + '</span></td>' +
-      '<td><span class="ut-visits">' + v + '</span></td>' +
+      '<td><span class="ut-visits">' + logins + '</span></td>' +
+      '<td><span class="ut-visits" style="color:var(--blue);">' + tools + '</span></td>' +
       '<td><div class="ut-bar"><div class="ut-bar-f" style="width:'+pct+'%"></div></div></td>' +
       '<td><span class="ut-last">' + (lst ? formatDate(lst) : '—') + '</span></td>';
     tbody.appendChild(tr);
