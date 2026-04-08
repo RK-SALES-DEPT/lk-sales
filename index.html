@@ -1150,7 +1150,7 @@ async function doLogin() {
     sessionStorage.setItem('hub_user', JSON.stringify(user));
     localStorage.setItem('tlm_hub_token', JSON.stringify({
       user: user.login, name: user.name, role: user.role,
-      expires: Date.now() + 48 * 60 * 60 * 1000
+      expires: Date.now() + 12 * 60 * 60 * 1000
     }));
     try {
       if (typeof ym !== 'undefined') {
