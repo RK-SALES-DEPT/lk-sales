@@ -387,7 +387,7 @@
       padding:20px; display:flex; flex-direction:column; gap:12px;
       transition:border-color .18s, box-shadow .18s, transform .18s;
       text-decoration:none; color:inherit; position:relative; overflow:hidden;
-      min-width:0;
+      min-width:0; word-break:break-word;
     }
     .mat-card::after {
       content:''; position:absolute; top:0; left:0; right:0; height:3px;
@@ -402,7 +402,7 @@
       display:flex; align-items:center; justify-content:center;
       font-size:20px; flex-shrink:0;
     }
-    .mat-title { font-size:14px; font-weight:800; color:var(--text); letter-spacing:-0.2px; line-height:1.3; }
+    .mat-title { font-size:14px; font-weight:800; color:var(--text); letter-spacing:-0.2px; line-height:1.3; overflow-wrap:break-word; }
     .mat-desc  { font-size:11px; font-weight:500; color:var(--muted); line-height:1.5; flex:1; }
     .mat-footer { display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border); }
     .mat-tag {
@@ -809,961 +809,139 @@
   <div class="hub-page" id="page-materials">
     <div class="hub-content">
 
-      <div class="analytics-header">
-        <div class="analytics-meta">
-          <h2>Материалы и презентации</h2>
-          <p>Актуальные презентации для работы с клиентами</p>
-        </div>
+      <div style="margin-bottom:20px;">
+        <h2 style="font-size:20px;font-weight:800;letter-spacing:-0.4px;margin-bottom:3px;">Материалы и презентации</h2>
+        <p style="font-size:13px;color:var(--muted);font-weight:500;">Актуальные презентации, инструкции и КП для работы с клиентами</p>
       </div>
 
-      <div class="section-label">Презентации Robokassa</div>
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:rgba(160,106,0,0.07);border:1px solid rgba(160,106,0,0.2);border-radius:12px;margin-bottom:18px;">
+      <!-- Предупреждение -->
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:rgba(160,106,0,0.07);border:1px solid rgba(160,106,0,0.2);border-radius:12px;margin-bottom:28px;">
         <span style="font-size:18px;flex-shrink:0;">⚠️</span>
-        <span style="font-size:12px;font-weight:600;color:#A06A00;line-height:1.6;">
-          В некоторых презентациях указаны тарифы, которые могут меняться (Основная, Яндекс Сплит и Пэй, Платёжные методы).
-          Актуальные ставки всегда на <a href="https://robokassa.com/payments/tarify/" target="_blank" style="color:#A06A00;font-weight:700;text-decoration:underline;">сайте Robokassa</a>.
-        </span>
+        <span style="font-size:12px;font-weight:600;color:#A06A00;line-height:1.6;">В некоторых презентациях указаны тарифы, которые могут меняться (Основная, Яндекс Сплит и Пэй, Платёжные методы). Актуальные ставки всегда на <a href="https://robokassa.com/payments/tarify/" target="_blank" style="color:#A06A00;font-weight:700;text-decoration:underline;">сайте Robokassa</a>.</span>
       </div>
-      <div class="materials-grid">
+
+      <!-- ПРЕЗЕНТАЦИИ -->
+      <div class="section-label" style="margin-bottom:14px;">Презентации</div>
+      <div class="materials-grid" style="margin-bottom:32px;">
+
         <a class="mat-card" href="https://robokassa.com/media/marketing/RK_main.pdf" target="_blank" onclick="trackPresentation('Основная презентация')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Основная презентация</div>
           <div class="mat-desc">Общее описание продуктов и возможностей Robokassa</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://robokassa.com/media/marketing/RK_partners.pdf" target="_blank" onclick="trackPresentation('Презентация для партнёров')">
           <div class="mat-icon">📄</div>
-          <div class="mat-title">Презентация для партнёров</div>
+          <div class="mat-title">Для партнёров</div>
           <div class="mat-desc">Условия партнёрства, комиссии и преимущества сотрудничества</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://robokassa.com/media/marketing/RK_online.pdf" target="_blank" onclick="trackPresentation('Robokassa Онлайн')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Robokassa Онлайн</div>
           <div class="mat-desc">Онлайн-касса и решения для интернет-торговли</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://robokassa.com/media/RK_YaPAY_Split_Special.pdf" target="_blank" onclick="trackPresentation('Яндекс Сплит и Пэй')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Яндекс Сплит и Пэй</div>
           <div class="mat-desc">Специальные условия по продуктам Яндекс Pay и Сплит</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://robokassa.com/media/marketing/payment_methods.pdf" target="_blank" onclick="trackPresentation('Платёжные методы')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Платёжные методы</div>
           <div class="mat-desc">Все доступные методы оплаты: карты, СБП, кошельки и другие</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://robokassa.com/media/marketing/BNPL.pdf" target="_blank" onclick="trackPresentation('BNPL и рассрочка')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">BNPL и рассрочка</div>
           <div class="mat-desc">Сервис покупки в рассрочку без переплат для клиентов</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://robokassa.com/media/marketing/Foreign_cards.pdf" target="_blank" onclick="trackPresentation('Иностранные карты')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Иностранные карты</div>
           <div class="mat-desc">Приём платежей по иностранным картам: Visa, Mastercard и другие</div>
-          <div class="mat-footer">
-            <span class="mat-tag">PDF</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
+
         <a class="mat-card" href="https://disk.360.yandex.ru/d/CxYqfd24Giszcw" target="_blank" onclick="trackPresentation('Альфа Пэй')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Альфа Пэй</div>
           <div class="mat-desc">Презентация по продукту Альфа Пэй.</div>
-          <div style="display:flex;align-items:flex-start;gap:7px;padding:8px 10px;background:rgba(82,95,251,0.07);border-radius:8px;margin-top:4px;">
+          <div style="display:flex;align-items:flex-start;gap:7px;padding:8px 10px;background:rgba(82,95,251,0.07);border-radius:8px;">
             <span style="font-size:13px;flex-shrink:0;">📝</span>
             <span style="font-size:11px;font-weight:700;color:var(--blue);line-height:1.5;">Не забудьте указать расчёты выгоды и свои контактные данные</span>
           </div>
-          <div class="mat-footer">
-            <span class="mat-tag">Яндекс Диск</span>
-            <div class="mat-open">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(82,95,251,0.08);color:var(--blue);">Яндекс Диск</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
-      <div class="section-label" style="margin-top:32px;">Инструкции</div>
-      <div class="materials-grid">
+      </div>
+
+      <!-- ИНСТРУКЦИИ -->
+      <div class="section-label" style="margin-bottom:14px;">Инструкции</div>
+      <div class="materials-grid" style="margin-bottom:32px;">
 
         <a class="mat-card" href="https://robokassa.com/media/marketing/RK_Online_instruction.pdf" target="_blank" onclick="trackPresentation('Инструкция Robokassa Онлайн')">
           <div class="mat-icon" style="background:rgba(13,159,110,0.08);">📘</div>
           <div class="mat-title">Robokassa Онлайн</div>
           <div class="mat-desc">Инструкция по работе с Robokassa Онлайн</div>
-          <div class="mat-footer">
-            <span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span>
-            <div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
         <a class="mat-card" href="https://robokassa.com/media/RK_connect_IP.pdf" target="_blank" onclick="trackPresentation('Инструкция подключение ИП')">
           <div class="mat-icon" style="background:rgba(13,159,110,0.08);">📘</div>
           <div class="mat-title">Подключение для ИП</div>
           <div class="mat-desc">Пошаговая инструкция по подключению для индивидуальных предпринимателей</div>
-          <div class="mat-footer">
-            <span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span>
-            <div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
         <a class="mat-card" href="https://robokassa.com/media/RK_connect_JUR.pdf" target="_blank" onclick="trackPresentation('Инструкция подключение юр. лица')">
           <div class="mat-icon" style="background:rgba(13,159,110,0.08);">📘</div>
           <div class="mat-title">Подключение для юр. лиц</div>
           <div class="mat-desc">Пошаговая инструкция по подключению для юридических лиц</div>
-          <div class="mat-footer">
-            <span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span>
-            <div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
         <a class="mat-card" href="https://robokassa.com/media/RK_connect_SMZ.pdf" target="_blank" onclick="trackPresentation('Инструкция подключение СМЗ')">
           <div class="mat-icon" style="background:rgba(13,159,110,0.08);">📘</div>
           <div class="mat-title">Подключение для СМЗ</div>
           <div class="mat-desc">Пошаговая инструкция по подключению для самозанятых</div>
-          <div class="mat-footer">
-            <span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span>
-            <div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(13,159,110,0.08);color:var(--ok);">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
       </div>
 
-      <div class="section-label" style="margin-top:32px;">Коммерческие предложения</div>
-      <div class="materials-grid">
+      <!-- КП -->
+      <div class="section-label" style="margin-bottom:14px;">Коммерческие предложения</div>
+      <div class="materials-grid" style="margin-bottom:32px;">
 
         <a class="mat-card" href="https://robokassa.com/media/marketing/KP.pdf" target="_blank" onclick="trackPresentation('КП Robokassa')">
           <div class="mat-icon" style="background:rgba(160,106,0,0.08);">💼</div>
           <div class="mat-title">КП Robokassa</div>
           <div class="mat-desc">Коммерческое предложение по основным продуктам Robokassa</div>
-          <div class="mat-footer">
-            <span class="mat-tag" style="background:rgba(160,106,0,0.08);color:#A06A00;">PDF</span>
-            <div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(160,106,0,0.08);color:#A06A00;">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
         <a class="mat-card" href="https://robokassa.com/media/marketing/KP_podeli.pdf" target="_blank" onclick="trackPresentation('КП Подели')">
           <div class="mat-icon" style="background:rgba(160,106,0,0.08);">💼</div>
           <div class="mat-title">КП Подели</div>
           <div class="mat-desc">Коммерческое предложение по продукту Подели — оплата частями</div>
-          <div class="mat-footer">
-            <span class="mat-tag" style="background:rgba(160,106,0,0.08);color:#A06A00;">PDF</span>
-            <div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-          </div>
+          <div class="mat-footer"><span class="mat-tag" style="background:rgba(160,106,0,0.08);color:#A06A00;">PDF</span><div class="mat-open"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div></div>
         </a>
 
-      </div>
       </div>
 
     </div>
   </div>
-
-</div><!-- /hub-screen -->
-
-<script>
-/* ══ FAVICON ══ */
-document.getElementById('favicon-link').href = 'https://rk-sales-dept.github.io/lk-sales/v-rk-32.png';
-
-/* ══ FIREBASE INIT ══ */
-const firebaseConfig = {
-  apiKey:            "AIzaSyAzewvuLhDNvFoJeh8VZQAaKpWFjuuVniY",
-  authDomain:        "rk-sales-2026.firebaseapp.com",
-  projectId:         "rk-sales-2026",
-  storageBucket:     "rk-sales-2026.firebasestorage.app",
-  messagingSenderId: "247955813209",
-  appId:             "1:247955813209:web:71db1b103222091c759248",
-  measurementId:     "G-0CB6ECST31"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-/* ══ СОЛЬ ══ */
-const SALT = 'rk-sales-dept-2026';
-
-/* ══ USERS (локальный массив как fallback) ══ */
-const USERS_LOCAL = [
-  { login: 'alinaprasolova',  hash: '740ff60e292554317330c9489e207e142eb05367e1f425cc4f6428bdc886fbf6', name: 'Алина Прасолова',     role: 'admin'   },
-  { login: 's.kim',           hash: 'b73f81cd1121a4ba3191b8ab5fa572924a46e7f0deecae53abda2c5a1b0ca681', name: 'Сергей Ким',          role: 'manager' },
-  { login: 'n.akulov',        hash: '6843734ae34c0e76400fe9aa238920a5c298daf3ae8ce329450327aaaea65ce2', name: 'Никита Акулов',       role: 'manager' },
-  { login: 'v.ulitin',        hash: '3dd5f3b034a6de81b7ffb69c729bdc9ee2054d2cd8800983d5454959356b1124', name: 'Василий Улитин',      role: 'manager' },
-  { login: 'a.morozov',       hash: 'b899278898623ba53022c42fe9980995fd6fbd5a3778bc92589a76325a79f604', name: 'Алексей Морозов',     role: 'manager' },
-  { login: 'k.mikerina',      hash: '6ec1240b7a3597c94791b79041c362b829c64962237bfea52449a2deb6ec30b1', name: 'Ксения Микерина',     role: 'manager' },
-  { login: 'a.abilkilyamova', hash: '520d7e68de2d9f998d31575401f53cab863359d0ed6b284098c178354213de7a', name: 'Арина Абилькилямова', role: 'manager' },
-  { login: 'l.rusanov',       hash: '3029525f30de12ec5550546bc3bb7732867602b5a7c9c5fbbc6276bcbe51146a', name: 'Леонид Русанов',      role: 'manager' },
-  { login: 'e.mankova',       hash: '0d4d743dec7b0419f2991b82a458f5ff1786de51006ea3e6f91f0b16c0b97c22', name: 'Екатерина Манькова',  role: 'manager' },
-  { login: 'i.rizvanov',      hash: '239532b5e90383cced77251c75040fa51fdc3f4c4608c1cea38ecd9e054961df', name: 'Ильназ Ризванов',     role: 'manager' },
-  { login: 'yu.pevneva',      hash: '8ba425a9d3f19614de2b8b7c906e676d2a6920767d397ac1f4d71bda27acbb4d', name: 'Юлия Певнева',        role: 'manager' },
-  { login: 'v.volina',        hash: '455790ff8472b66e279d421a2db6a53083d7f01de4f82f6ea31cc67a795ce0ea', name: 'Вера Волина',         role: 'manager' },
-  { login: 's.salibekyan',    hash: '2c19574765301be26c48332754bb615de63545ac52dd084cbe03767a2a9fdf41', name: 'Степан Салибекян',   role: 'admin'   },
-  { login: 'yu.udalova',      hash: 'aa00b7dfd4b9366e5247181822f6a53d26373ad2082b2eb971dd9e1b9fa57b33', name: 'Юлия Удалова',       role: 'admin'   },
-  { login: 'admin',           hash: '83d8d0673134b197da778ab65ad2e32e7326969b56ced2e0c2ad04053f208512', name: 'Администратор',       role: 'admin'   },
-  { login: 'manager',         hash: '5ef30c8336cc12f228a986ca1711d10795b9271563ab088b3985f9663fd0c27e', name: 'Менеджер',            role: 'manager' },
-  { login: 'sales',           hash: 'aa13d01cac384573890f621e3f4be441a765522d0b323ed3210dc2f1c276dcab', name: 'Отдел продаж',        role: 'manager' },
-  { login: 'marketing',       hash: '3ca030d85fc3747b195b3024df90e0313fc6e78682422aeef81902a378ef7816', name: 'Отдел маркетинга',   role: 'manager' },
-  { login: 'a.ibragimova',    hash: 'c94e0e5bd50b88351a2f9a2eecf353931045e1b6d6ef7d8513c48b14b7cdc629', name: 'Алина Ибрагимова',   role: 'manager' },
-];
-
-/* Актуальный список — начинаем с локального, потом Firebase дополнит */
-let USERS = [...USERS_LOCAL];
-
-const TOOL_NAMES = { navigator:'Навигатор ТЛМ', calculator:'Калькулятор продаж', competitor:'Анализ конкурентов' };
-const TOOLS      = ['navigator','calculator','competitor'];
-let currentUser  = null;
-let visitsChart  = null;
-
-/* ══ FIREBASE HELPERS ══ */
-function fsLogLogin(user) {
-  try {
-    db.collection('activity_logs').add({
-      user: user.login, name: user.name, action: 'login', details: '',
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    /* Онлайн-присутствие */
-    db.collection('presence').doc(user.login).set({
-      name: user.name, role: user.role,
-      lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-      online: true
-    });
-  } catch(e) { console.warn('fsLogLogin:', e); }
-}
-
-function fsLogTool(user, toolKey) {
-  try {
-    db.collection('activity_logs').add({
-      user: user.login, name: user.name, action: 'open_tool',
-      details: TOOL_NAMES[toolKey] || toolKey,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  } catch(e) { console.warn('fsLogTool:', e); }
-}
-
-function fsSetOffline(user) {
-  if (!user) return;
-  try {
-    db.collection('presence').doc(user.login).set({
-      name: user.name, role: user.role,
-      lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-      online: false
-    }, { merge: true });
-  } catch(e) {}
-}
-
-/* ══ REALTIME LISTENERS ══ */
-let fsUnsubActivity = null;
-let fsUnsubPresence = null;
-let fsUnsubUsers    = null;
-
-function startFsListeners() {
-  /* Activity logs */
-  if (!fsUnsubActivity) {
-    fsUnsubActivity = db.collection('activity_logs')
-      .orderBy('timestamp','desc').limit(200)
-      .onSnapshot(snap => {
-        allFsDocs = snap.docs; // кэшируем все документы для профиля
-        renderFsLog(snap.docs.slice(0,50));
-        updateFsKpis(snap.docs);
-        updateFsChart(snap.docs);
-        updateFsUsersTable(snap.docs);
-      }, err => console.warn('activity listener:', err));
-  }
-  /* Presence */
-  if (!fsUnsubPresence) {
-    fsUnsubPresence = db.collection('presence')
-      .onSnapshot(snap => renderOnline(snap.docs), err => console.warn('presence:', err));
-  }
-  /* Users collection */
-  if (!fsUnsubUsers) {
-    fsUnsubUsers = db.collection('users')
-      .onSnapshot(snap => {
-        if (!snap.empty) {
-          const fbUsers = snap.docs.map(d => d.data());
-          USERS = [...USERS_LOCAL, ...fbUsers.filter(fu => !USERS_LOCAL.find(lu => lu.login === fu.login))];
-        }
-        renderMgmtTable();
-      }, err => console.warn('users listener:', err));
-  }
-}
-
-function stopFsListeners() {
-  if (fsUnsubActivity) { fsUnsubActivity(); fsUnsubActivity = null; }
-  if (fsUnsubPresence) { fsUnsubPresence(); fsUnsubPresence = null; }
-  if (fsUnsubUsers)    { fsUnsubUsers();    fsUnsubUsers    = null; }
-}
-
-/* ══ ONLINE INDICATOR ══ */
-function renderOnline(docs) {
-  const el = document.getElementById('online-list');
-  const countEl = document.getElementById('online-count');
-  if (!el) return;
-
-  const ONLINE_THRESHOLD = 10 * 60 * 1000; // 10 минут
-  const now = Date.now();
-  const online = docs.filter(d => {
-    const data = d.data();
-    if (!data.online) return false;
-    const ts = data.lastSeen ? data.lastSeen.toDate().getTime() : 0;
-    return (now - ts) < ONLINE_THRESHOLD;
-  });
-
-  if (countEl) countEl.textContent = online.length > 0 ? '(' + online.length + ')' : '';
-
-  if (online.length === 0) {
-    el.innerHTML = '<div style="font-size:13px;color:var(--muted);">Никого нет онлайн</div>';
-    return;
-  }
-
-  el.innerHTML = '';
-  online.forEach(d => {
-    const data = d.data();
-    const ini = (data.name || data.login || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
-    const chip = document.createElement('div');
-    chip.style.cssText = 'display:flex;align-items:center;gap:7px;padding:6px 12px 6px 6px;background:var(--ok-bg);border:1px solid rgba(13,159,110,0.2);border-radius:999px;';
-    chip.innerHTML =
-      '<div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--ok),#2DD4A0);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;">' + ini + '</div>' +
-      '<span style="font-size:12px;font-weight:600;color:var(--ok);">' + (data.name || data.login) + '</span>' +
-      '<span style="width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block;"></span>';
-    el.appendChild(chip);
-  });
-}
-
-/* ══ ANALYTICS FROM FIREBASE ══ */
-function renderFsLog(docs) {
-  const logEl = document.getElementById('activity-list');
-  if (!logEl) return;
-  logEl.innerHTML = '';
-  if (!docs || docs.length === 0) {
-    logEl.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0;">Событий пока нет</div>';
-    return;
-  }
-  docs.forEach(doc => {
-    const ev = doc.data();
-    const ts = ev.timestamp ? ev.timestamp.toDate() : new Date();
-    const dotCls = ev.action === 'login' ? 'd-gray'
-                 : (ev.details || '').includes('Навигатор')   ? 'd-blue'
-                 : (ev.details || '').includes('Калькулятор') ? 'd-green'
-                 : (ev.details || '').includes('конкурент')   ? 'd-amber' : 'd-gray';
-    const text = ev.action === 'login'
-      ? '<strong>' + (ev.name || ev.user) + '</strong> вошёл в хаб'
-      : '<strong>' + (ev.name || ev.user) + '</strong> открыл «' + ev.details + '»';
-    const item = document.createElement('div');
-    item.className = 'activity-item';
-    item.innerHTML = '<div class="a-dot ' + dotCls + '"></div><div class="a-text">' + text + '</div><div class="a-time">' + formatAgo(ts.getTime()) + '</div>';
-    logEl.appendChild(item);
-  });
-}
-
-function updateFsKpis(docs) {
-  const loginDocs = docs.filter(d => d.data().action === 'login');
-  const toolDocs  = docs.filter(d => d.data().action === 'open_tool');
-  const todayStr  = new Date().toISOString().slice(0,10);
-  const todayV    = loginDocs.filter(d => {
-    const ts = d.data().timestamp;
-    return ts && ts.toDate().toISOString().slice(0,10) === todayStr;
-  }).length;
-
-  const navCount  = toolDocs.filter(d => (d.data().details||'').includes('Навигатор')).length;
-  const calcCount = toolDocs.filter(d => (d.data().details||'').includes('Калькулятор')).length;
-  const compCount = toolDocs.filter(d => (d.data().details||'').includes('конкурент')).length;
-  const totalClicks = navCount + calcCount + compCount;
-
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  set('kpi-total',  loginDocs.length);
-  set('kpi-today',  todayV);
-  set('kpi-clicks', totalClicks);
-
-  const counts   = { 'Навигатор ТЛМ': navCount, 'Калькулятор продаж': calcCount, 'Анализ конкурентов': compCount };
-  const topEntry = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
-  const topEmoji = { 'Навигатор ТЛМ':'🧭', 'Калькулятор продаж':'🧮', 'Анализ конкурентов':'⚔️' };
-  if (topEntry && topEntry[1] > 0) {
-    set('kpi-top',     (topEmoji[topEntry[0]]||'') + ' ' + topEntry[0]);
-    set('kpi-top-sub', topEntry[1] + ' кликов');
-  }
-
-  const maxC   = Math.max(1, navCount, calcCount, compCount);
-  const tMap   = { navigator: navCount, calculator: calcCount, competitor: compCount };
-  TOOLS.forEach(t => {
-    const c = tMap[t];
-    const pcEl = document.getElementById('pc-'+t);
-    const ppEl = document.getElementById('pp-'+t);
-    const pbEl = document.getElementById('pb-'+t);
-    if (pcEl) pcEl.textContent = c;
-    if (ppEl) ppEl.textContent = totalClicks > 0 ? Math.round(c/totalClicks*100)+'%' : '0%';
-    if (pbEl) pbEl.style.width = Math.round(c/maxC*100) + '%';
-  });
-}
-
-function updateFsChart(docs) {
-  const loginDocs = docs.filter(d => d.data().action === 'login');
-  const dayCounts = {};
-  loginDocs.forEach(d => {
-    const ts = d.data().timestamp;
-    if (!ts) return;
-    const key = ts.toDate().toISOString().slice(0,10);
-    dayCounts[key] = (dayCounts[key] || 0) + 1;
-  });
-  const labels = [], values = [];
-  for (let i = 13; i >= 0; i--) {
-    const dt  = new Date(Date.now() - i*86400000);
-    const key = dt.toISOString().slice(0,10);
-    labels.push(dt.toLocaleDateString('ru-RU', { day:'numeric', month:'short' }));
-    values.push(dayCounts[key] || 0);
-  }
-  if (visitsChart) {
-    visitsChart.data.labels = labels;
-    visitsChart.data.datasets[0].data = values;
-    visitsChart.update('active');
-  } else {
-    const ctx = document.getElementById('visitsChart');
-    if (!ctx) return;
-    visitsChart = new Chart(ctx.getContext('2d'), {
-      type: 'bar',
-      data: { labels, datasets: [{ label:'Заходы', data: values,
-        backgroundColor:'rgba(82,95,251,0.14)', borderColor:'#525FFB',
-        borderWidth:2, borderRadius:7, borderSkipped:false,
-        hoverBackgroundColor:'rgba(82,95,251,0.3)' }] },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>' '+c.raw+' заход'+(c.raw===1?'':'ов')}} },
-        scales:{
-          x:{grid:{display:false}, ticks:{font:{family:'Geologica',size:10},color:'#6B7394',maxRotation:45}},
-          y:{grid:{color:'#E2E7F1'}, ticks:{font:{family:'Geologica',size:11},color:'#6B7394',stepSize:1,precision:0}, beginAtZero:true}
-        }
-      }
-    });
-  }
-}
-
-function updateFsUsersTable(docs) {
-  const tbody = document.getElementById('users-tbody');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-
-  // Считаем входы в хаб
-  const loginDocs = docs.filter(d => d.data().action === 'login');
-  // Считаем открытия инструментов
-  const toolDocs  = docs.filter(d => d.data().action === 'open_tool');
-
-  const loginMap = {};  // входы в хаб
-  const toolMap  = {};  // открытия инструментов
-  const lastMap  = {};  // последнее событие
-
-  loginDocs.forEach(d => {
-    const ev = d.data();
-    loginMap[ev.user] = (loginMap[ev.user] || 0) + 1;
-    const ts = ev.timestamp ? ev.timestamp.toDate().getTime() : 0;
-    if (!lastMap[ev.user] || ts > lastMap[ev.user]) lastMap[ev.user] = ts;
-  });
-
-  toolDocs.forEach(d => {
-    const ev = d.data();
-    toolMap[ev.user] = (toolMap[ev.user] || 0) + 1;
-    const ts = ev.timestamp ? ev.timestamp.toDate().getTime() : 0;
-    if (!lastMap[ev.user] || ts > lastMap[ev.user]) lastMap[ev.user] = ts;
-  });
-
-  // Суммарная активность для полосы
-  const totalMap = {};
-  [...loginDocs, ...toolDocs].forEach(d => {
-    const ev = d.data();
-    totalMap[ev.user] = (totalMap[ev.user] || 0) + 1;
-  });
-
-  const maxV = Math.max(1, ...Object.values(totalMap));
-  USERS.forEach(u => {
-    const logins = loginMap[u.login] || 0;
-    const tools  = toolMap[u.login]  || 0;
-    const total  = logins + tools;
-    const lst    = lastMap[u.login];
-    const ini    = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const pct    = Math.round(total/maxV*100);
-    const avCls  = u.role === 'admin' ? 'av-admin' : 'av-manager';
-    const rbCls  = u.role === 'admin' ? 'role-admin' : 'role-manager';
-    const rbText = u.role === 'admin' ? 'Admin' : 'Manager';
-    const tr = document.createElement('tr');
-    tr.setAttribute('title', 'Нажмите чтобы посмотреть профиль');
-    tr.onclick = () => openProfile(u.login);
-    tr.innerHTML =
-      '<td><div class="ut-name"><div class="ut-avatar ' + avCls + '">' + ini + '</div>' + u.name + '</div></td>' +
-      '<td><span class="ut-role-badge ' + rbCls + '">' + rbText + '</span></td>' +
-      '<td><span class="ut-visits">' + logins + '</span></td>' +
-      '<td><span class="ut-visits" style="color:var(--blue);">' + tools + '</span></td>' +
-      '<td><div class="ut-bar"><div class="ut-bar-f" style="width:'+pct+'%"></div></div></td>' +
-      '<td><span class="ut-last">' + (lst ? formatDate(lst) : '—') + '</span></td>';
-    tbody.appendChild(tr);
-  });
-}
-
-/* ══ USERS MANAGEMENT ══ */
-let editingLogin = null;
-
-function renderMgmtTable() {
-  const tbody = document.getElementById('mgmt-tbody');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-  USERS.forEach(u => {
-    const ini    = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const avCls  = u.role === 'admin' ? 'av-admin' : 'av-manager';
-    const rbCls  = u.role === 'admin' ? 'role-admin' : 'role-manager';
-    const rbText = u.role === 'admin' ? 'Admin' : 'Manager';
-    const isBase = USERS_LOCAL.find(lu => lu.login === u.login);
-    const tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td><div class="ut-name"><div class="ut-avatar ' + avCls + '">' + ini + '</div>' + u.name + '</div></td>' +
-      '<td style="font-size:12px;color:var(--muted);font-weight:600;">' + u.login + '</td>' +
-      '<td><span class="ut-role-badge ' + rbCls + '">' + rbText + '</span></td>' +
-      '<td id="last-' + u.login + '" style="font-size:12px;color:var(--muted);">—</td>' +
-      '<td style="display:flex;gap:6px;padding-top:12px;">' +
-        '<button onclick="changeRole(\'' + u.login + '\',\'' + (u.role==='admin'?'manager':'admin') + '\')" style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;">' +
-          (u.role==='admin' ? '→ Manager' : '→ Admin') +
-        '</button>' +
-        (!isBase ? '<button onclick="deleteUser(\'' + u.login + '\')" style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1.5px solid rgba(217,53,71,0.3);background:var(--danger-bg);color:var(--danger);cursor:pointer;">Удалить</button>' : '') +
-      '</td>';
-    tbody.appendChild(tr);
-  });
-}
-
-async function changeRole(login, newRole) {
-  const u = USERS.find(u => u.login === login);
-  if (!u) return;
-  const isBase = USERS_LOCAL.find(lu => lu.login === login);
-  if (isBase) {
-    alert('Базовых пользователей можно менять только в коде. Добавьте нового пользователя через Firebase если нужна другая роль.');
-    return;
-  }
-  try {
-    await db.collection('users').doc(login).update({ role: newRole });
-    u.role = newRole;
-    renderMgmtTable();
-  } catch(e) { console.warn('changeRole:', e); }
-}
-
-async function deleteUser(login) {
-  if (!confirm('Удалить пользователя ' + login + '?')) return;
-  try {
-    await db.collection('users').doc(login).delete();
-    USERS = USERS.filter(u => u.login !== login);
-    renderMgmtTable();
-  } catch(e) { console.warn('deleteUser:', e); }
-}
-
-function showAddUserModal() {
-  editingLogin = null;
-  document.getElementById('modal-title').textContent = 'Новый пользователь';
-  document.getElementById('modal-save-btn').textContent = 'Сохранить';
-  document.getElementById('mu-name').value  = '';
-  document.getElementById('mu-login').value = '';
-  document.getElementById('mu-pass').value  = '';
-  document.getElementById('mu-role').value  = 'manager';
-  document.getElementById('modal-error').style.display = 'none';
-  document.getElementById('modal-overlay').style.display = 'flex';
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').style.display = 'none';
-}
-
-async function saveUser() {
-  const name  = document.getElementById('mu-name').value.trim();
-  const login = document.getElementById('mu-login').value.trim().toLowerCase();
-  const pass  = document.getElementById('mu-pass').value.trim();
-  const role  = document.getElementById('mu-role').value;
-  const errEl = document.getElementById('modal-error');
-
-  if (!name || !login || !pass) {
-    errEl.textContent = 'Заполните все поля';
-    errEl.style.display = 'block';
-    return;
-  }
-  if (USERS.find(u => u.login === login)) {
-    errEl.textContent = 'Логин уже занят';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  const msgBuffer  = new TextEncoder().encode(SALT + pass);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashHex    = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
-
-  try {
-    await db.collection('users').doc(login).set({ login, hash: hashHex, name, role });
-    USERS.push({ login, hash: hashHex, name, role });
-    closeModal();
-    renderMgmtTable();
-    alert('Пользователь ' + name + ' добавлен! Логин: ' + login + ', пароль: ' + pass);
-  } catch(e) {
-    errEl.textContent = 'Ошибка сохранения: ' + e.message;
-    errEl.style.display = 'block';
-  }
-}
-
-/* ══ LOCAL STORAGE (badges only) ══ */
-function getData() {
-  try { return JSON.parse(localStorage.getItem('tlm_hub_v2') || '{}'); } catch(e){ return {}; }
-}
-function initData() {
-  const d = getData();
-  if (!d.clicks) d.clicks = { navigator:0, calculator:0, competitor:0 };
-  return d;
-}
-function saveData(d) { localStorage.setItem('tlm_hub_v2', JSON.stringify(d)); }
-
-function trackClick(tool) {
-  if (!currentUser) return;
-  fsLogTool(currentUser, tool);
-  const d = initData();
-  d.clicks[tool] = (d.clicks[tool] || 0) + 1;
-  saveData(d);
-  updateBadges(d);
-}
-
-function updateBadges(d) {
-  TOOLS.forEach(t => {
-    const el = document.getElementById('cnt-' + t);
-    if (el) el.textContent = d.clicks[t] || 0;
-  });
-}
-
-/* ══ LOGIN / LOGOUT ══ */
-async function doLogin() {
-  const login = document.getElementById('f-login').value.trim();
-  const pass  = document.getElementById('f-pass').value;
-
-  const msgBuffer  = new TextEncoder().encode(SALT + pass);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashHex    = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
-
-  /* Сначала ищем в локальном массиве, потом в Firebase */
-  let user = USERS.find(u => u.login === login && u.hash === hashHex);
-
-  if (!user) {
-    /* Попытка найти в Firebase users */
-    try {
-      const snap = await db.collection('users').doc(login).get();
-      if (snap.exists) {
-        const data = snap.data();
-        if (data.hash === hashHex) user = data;
-      }
-    } catch(e) {}
-  }
-
-  if (user) {
-    currentUser = user;
-    sessionStorage.setItem('hub_user', JSON.stringify(user));
-    localStorage.setItem('tlm_hub_token', JSON.stringify({
-      user: user.login, name: user.name, role: user.role,
-      expires: Date.now() + 12 * 60 * 60 * 1000
-    }));
-    try {
-      if (typeof ym !== 'undefined') {
-        ym(108288413, 'setUserID', user.login);
-        ym(108288413, 'userParams', { UserID: user.login, login: user.login, name: user.name, role: user.role });
-      }
-    } catch(e) {}
-    fsLogLogin(user);
-    const redirectTo = sessionStorage.getItem('tlm_redirect_after_login');
-    if (redirectTo) {
-      sessionStorage.removeItem('tlm_redirect_after_login');
-      location.href = redirectTo;
-      return;
-    }
-    showHub(user);
-  } else {
-    const box = document.getElementById('login-box');
-    box.classList.add('shake');
-    setTimeout(() => box.classList.remove('shake'), 400);
-    document.getElementById('login-error').classList.add('show');
-    document.getElementById('f-login').classList.add('error');
-    document.getElementById('f-pass').classList.add('error');
-    document.getElementById('f-pass').value = '';
-  }
-}
-
-function showHub(user) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('hub-screen').style.display   = 'block';
-
-  const parts    = user.name.split(' ');
-  const initials = parts.map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  document.getElementById('h-avatar').textContent = initials;
-  document.getElementById('h-name').textContent   = user.name;
-
-  const rb = document.getElementById('h-role-badge');
-  rb.textContent = user.role === 'admin' ? 'Admin' : 'Manager';
-  rb.className   = 'role-badge ' + (user.role === 'admin' ? 'role-admin' : 'role-manager');
-
-  const isAdmin = user.role === 'admin';
-  document.getElementById('tab-analytics').style.display = isAdmin ? '' : 'none';
-  document.getElementById('tab-users').style.display     = isAdmin ? '' : 'none';
-
-  const hour     = new Date().getHours();
-  const greeting = hour < 12 ? 'Доброе утро' : hour < 18 ? 'Добрый день' : 'Добрый вечер';
-  document.getElementById('b-greeting').textContent = greeting;
-  document.getElementById('b-title').textContent    = parts[0] + ' 👋';
-  document.getElementById('b-sub').textContent      = isAdmin
-    ? 'Выберите инструмент или откройте аналитику'
-    : 'Выберите нужный инструмент';
-
-  switchTab('tools');
-  updateBadges(initData());
-  if (isAdmin) startFsListeners();
-}
-
-function doLogout() {
-  fsSetOffline(currentUser);
-  stopFsListeners();
-  currentUser = null;
-  sessionStorage.removeItem('hub_user');
-  localStorage.removeItem('tlm_hub_token');
-  if (visitsChart) { visitsChart.destroy(); visitsChart = null; }
-  document.getElementById('hub-screen').style.display   = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('f-login').value = '';
-  document.getElementById('f-pass').value  = '';
-  document.getElementById('login-error').classList.remove('show');
-  document.getElementById('f-login').classList.remove('error');
-  document.getElementById('f-pass').classList.remove('error');
-}
-
-window.addEventListener('beforeunload', () => fsSetOffline(currentUser));
-
-/* ══ TABS ══ */
-function switchTab(tab) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.hub-page').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-  document.getElementById('page-' + tab).classList.add('active');
-  if (tab === 'analytics') renderAnalytics();
-  if (tab === 'users')     renderMgmtTable();
-}
-
-function trackPresentation(title) {
-  if (!currentUser) return;
-  try {
-    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
-      db.collection('activity_logs').add({
-        user:      currentUser.login,
-        name:      currentUser.name,
-        action:    'open_presentation',
-        details:   title,
-        tool:      'Материалы',
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-  } catch(e) {}
-}
-
-/* ══ TIME HELPERS ══ */
-function formatAgo(ts) {
-  const diff = Date.now() - ts;
-  if (diff < 60000)    return 'только что';
-  if (diff < 3600000)  return Math.floor(diff/60000) + ' мин назад';
-  if (diff < 86400000) return Math.floor(diff/3600000) + ' ч назад';
-  return new Date(ts).toLocaleDateString('ru-RU', { day:'numeric', month:'short' });
-}
-function formatDate(ts) {
-  if (!ts) return '—';
-  return new Date(ts).toLocaleDateString('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
-}
-
-/* ══ ANALYTICS RENDER (chart init only, data comes from Firebase) ══ */
-function renderAnalytics() {
-  const logEl = document.getElementById('activity-list');
-  if (logEl && logEl.children.length === 0) {
-    logEl.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0;">Загрузка данных из Firebase...</div>';
-  }
-}
-
-function refreshAnalytics(btn) {
-  const icon = document.getElementById('refresh-icon');
-  icon.classList.add('spinning');
-  setTimeout(() => icon.classList.remove('spinning'), 500);
-}
-
-
-/* ══ USER PROFILE PANEL ══ */
-let allFsDocs = []; // кэш всех документов из Firebase
-
-function openProfile(login) {
-  const user = USERS.find(u => u.login === login);
-  if (!user) return;
-
-  // Заполняем шапку
-  const ini   = user.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const avCls = user.role === 'admin' ? 'av-admin' : 'av-manager';
-  const rbCls = user.role === 'admin' ? 'role-admin' : 'role-manager';
-
-  const avatarEl = document.getElementById('profile-avatar');
-  avatarEl.textContent = ini;
-  avatarEl.className   = 'profile-avatar-lg ' + avCls;
-
-  document.getElementById('profile-name').textContent  = user.name;
-  document.getElementById('profile-login').textContent = '@' + user.login;
-
-  const rb = document.getElementById('profile-role-badge');
-  rb.textContent = user.role === 'admin' ? 'Admin' : 'Manager';
-  rb.className   = 'ut-role-badge ' + rbCls;
-
-  // Фильтруем события этого пользователя
-  const userDocs = allFsDocs.filter(d => d.data().user === login);
-  const loginEvs = userDocs.filter(d => d.data().action === 'login');
-  const toolEvs  = userDocs.filter(d => d.data().action === 'open_tool');
-  const timeEvs  = userDocs.filter(d => d.data().action === 'time_spent');
-
-  // Суммируем время
-  const totalSec = timeEvs.reduce((sum, d) => sum + (d.data().seconds || 0), 0);
-  const timeStr  = totalSec >= 3600
-    ? Math.round(totalSec/3600) + 'ч'
-    : totalSec >= 60
-    ? Math.round(totalSec/60) + 'м'
-    : totalSec + 'с';
-
-  document.getElementById('ps-logins').textContent = loginEvs.length;
-  document.getElementById('ps-tools').textContent  = toolEvs.length;
-  document.getElementById('ps-time').textContent   = timeStr || '0м';
-
-  // История событий (все кроме time_spent)
-  const eventsEl = document.getElementById('profile-events');
-  const events   = userDocs
-    .filter(d => d.data().action !== 'time_spent')
-    .sort((a,b) => {
-      const ta = a.data().timestamp ? a.data().timestamp.toDate().getTime() : 0;
-      const tb = b.data().timestamp ? b.data().timestamp.toDate().getTime() : 0;
-      return tb - ta;
-    });
-
-  if (events.length === 0) {
-    eventsEl.innerHTML = '<div class="profile-empty">Событий пока нет</div>';
-  } else {
-    eventsEl.innerHTML = '';
-    events.forEach(doc => {
-      const ev  = doc.data();
-      const ts  = ev.timestamp ? ev.timestamp.toDate().getTime() : 0;
-
-      const dotColor = ev.action === 'login'      ? 'var(--muted)'
-                     : ev.action === 'pdf_save'   ? 'var(--ok)'
-                     : ev.action === 'calculate'  ? 'var(--blue)'
-                     : ev.action === 'tab_switch' ? '#C08820'
-                     : 'var(--blue)';
-
-      const actionText = {
-        login:      '🔑 Вошёл в хаб',
-        open_tool:  '🔗 Открыл «' + (ev.details || ev.tool || '') + '»',
-        pdf_save:   '📄 ' + (ev.details || 'Сохранил PDF'),
-        calculate:  '🧮 ' + (ev.details || 'Запустил расчёт'),
-        tab_switch: '🔄 ' + (ev.details || 'Переключил вкладку'),
-      }[ev.action] || ev.action + (ev.details ? ': ' + ev.details : '');
-
-      const item = document.createElement('div');
-      item.className = 'profile-event';
-      item.innerHTML =
-        '<div class="profile-event-dot" style="background:' + dotColor + '"></div>' +
-        '<div class="profile-event-body">' +
-          '<div class="profile-event-text">' + actionText + '</div>' +
-          '<div class="profile-event-time">' + (ts ? formatDate(ts) : '—') + '</div>' +
-        '</div>';
-      eventsEl.appendChild(item);
-    });
-  }
-
-  // Открываем панель
-  document.getElementById('profile-overlay').classList.add('open');
-  document.getElementById('profile-panel').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeProfile() {
-  document.getElementById('profile-overlay').classList.remove('open');
-  document.getElementById('profile-panel').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Закрытие по Escape
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeProfile();
-});
-
-/* ══ INIT ══ */
-const saved = sessionStorage.getItem('hub_user');
-if (saved) {
-  try {
-    const savedUser = JSON.parse(saved);
-    const freshUser = USERS.find(u => u.login === savedUser.login) || savedUser;
-    if (freshUser) { currentUser = freshUser; showHub(freshUser); }
-    else sessionStorage.removeItem('hub_user');
-  } catch(e) { sessionStorage.removeItem('hub_user'); }
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') {
-    e.preventDefault(); doLogin();
-  }
-});
-['f-login','f-pass'].forEach(id => {
-  document.getElementById(id).addEventListener('input', () => {
-    document.getElementById('login-error').classList.remove('show');
-    document.getElementById('f-login').classList.remove('error');
-    document.getElementById('f-pass').classList.remove('error');
-  });
-});
-</script>
 
   <!-- ══ USER PROFILE PANEL ══ -->
   <div class="profile-overlay" id="profile-overlay" onclick="closeProfile()"></div>
