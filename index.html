@@ -374,6 +374,9 @@
     .users-table tbody tr:hover td { background:rgba(82,95,251,0.03); }
 
     /* ══ MATERIALS PAGE ══ */
+    #page-materials .hub-content { padding-top: 36px; }
+    #page-materials * { animation: none !important; }
+    
     .materials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
     @media(max-width:720px) { .materials-grid { grid-template-columns:1fr 1fr; } }
     @media(max-width:480px) { .materials-grid { grid-template-columns:1fr; } }
@@ -611,7 +614,7 @@
   <div class="hub-page" id="page-analytics">
     <div class="hub-content">
 
-      <div class="analytics-header fa1">
+      <div class="analytics-header">
         <div class="analytics-meta">
           <h2>Аналитика использования</h2>
           <p>Данные собираются при каждом входе и клике по инструментам</p>
@@ -728,7 +731,7 @@
   <div class="hub-page" id="page-users">
     <div class="hub-content">
 
-      <div class="analytics-header fa1">
+      <div class="analytics-header">
         <div class="analytics-meta">
           <h2>Управление пользователями</h2>
           <p>Добавляйте, удаляйте и меняйте роли без правки кода</p>
@@ -1553,15 +1556,15 @@ document.addEventListener('keydown', e => {
   <div class="hub-page" id="page-materials">
     <div class="hub-content">
 
-      <div class="analytics-header fa1">
+      <div class="analytics-header">
         <div class="analytics-meta">
           <h2>Материалы и презентации</h2>
           <p>Актуальные презентации для работы с клиентами</p>
         </div>
       </div>
 
-      <div class="section-label fa1">Презентации Robokassa</div>
-      <div class="materials-grid fa2">
+      <div class="section-label">Презентации Robokassa</div>
+      <div class="materials-grid">
         <a class="mat-card" href="https://robokassa.com/media/marketing/RK_main.pdf" target="_blank" onclick="trackPresentation('Основная презентация')">
           <div class="mat-icon">📄</div>
           <div class="mat-title">Основная презентация</div>
