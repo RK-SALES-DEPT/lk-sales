@@ -158,7 +158,7 @@
 
     /* TOOLS GRID */
     .tools-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
-    .tool-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 24px 20px 20px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; transition: border-color .18s, box-shadow .18s, transform .18s; }
+    .tool-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 24px 20px 20px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; transition: border-color .18s, box-shadow .18s, transform .18s; height: 100%; box-sizing: border-box; }
     .tool-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:3px 3px 0 0; opacity:0; transition:opacity .18s; }
     .tool-card.t-blue::after  { background: var(--blue); }
     .tool-card.t-green::after { background: var(--ok); }
@@ -182,7 +182,7 @@
     .tag-green { background:rgba(13,159,110,0.09); color:var(--ok); }
     .tag-amber { background:rgba(160,106,0,0.09);  color:#A06A00; }
     .tool-title { font-size:17px; font-weight:800; letter-spacing:-0.3px; margin-bottom:6px; }
-    .tool-desc  { font-size:12px; font-weight:500; color:var(--muted); line-height:1.65; }
+    .tool-desc  { font-size:12px; font-weight:500; color:var(--muted); line-height:1.65; flex:1; }
     .tool-divider { height:1px; background:var(--border); }
     .tool-footer { display:flex; align-items:center; flex-wrap:wrap; }
     .tool-feature { font-size:11px; font-weight:600; color:var(--muted); }
@@ -297,7 +297,7 @@
     .mgmt-btn:hover { color:var(--blue);border-color:var(--blue);background:var(--blue-soft); }
     .mgmt-btn-danger { border-color:rgba(217,53,71,0.3);background:var(--danger-bg);color:var(--danger); }
     #modal-overlay input:focus,#modal-overlay select:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(82,95,251,0.12);outline:none; }
-    .tools-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+    .tools-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; align-items:stretch; }
     @media(max-width:900px) { .tools-grid { grid-template-columns:repeat(2,1fr); } }
     @media(max-width:600px) { .tools-grid { grid-template-columns:1fr; } }
 
@@ -1020,18 +1020,14 @@ const USERS_LOCAL = [
   { login: 'a.morozov',       hash: 'b899278898623ba53022c42fe9980995fd6fbd5a3778bc92589a76325a79f604', name: 'Алексей Морозов',     role: 'manager' },
   { login: 'k.mikerina',      hash: '6ec1240b7a3597c94791b79041c362b829c64962237bfea52449a2deb6ec30b1', name: 'Ксения Микерина',     role: 'manager' },
   { login: 'a.abilkilyamova', hash: '520d7e68de2d9f998d31575401f53cab863359d0ed6b284098c178354213de7a', name: 'Арина Абилькилямова', role: 'manager' },
-  { login: 'l.rusanov',       hash: '3029525f30de12ec5550546bc3bb7732867602b5a7c9c5fbbc6276bcbe51146a', name: 'Леонид Русанов',      role: 'manager' },
-  { login: 'e.mankova',       hash: '0d4d743dec7b0419f2991b82a458f5ff1786de51006ea3e6f91f0b16c0b97c22', name: 'Екатерина Манькова',  role: 'manager' },
   { login: 'i.rizvanov',      hash: '239532b5e90383cced77251c75040fa51fdc3f4c4608c1cea38ecd9e054961df', name: 'Ильназ Ризванов',     role: 'manager' },
   { login: 'yu.pevneva',      hash: '8ba425a9d3f19614de2b8b7c906e676d2a6920767d397ac1f4d71bda27acbb4d', name: 'Юлия Певнева',        role: 'manager' },
-  { login: 'v.volina',        hash: '455790ff8472b66e279d421a2db6a53083d7f01de4f82f6ea31cc67a795ce0ea', name: 'Вера Волина',         role: 'manager' },
   { login: 's.salibekyan',    hash: '2c19574765301be26c48332754bb615de63545ac52dd084cbe03767a2a9fdf41', name: 'Степан Салибекян',   role: 'admin'   },
   { login: 'yu.udalova',      hash: 'aa00b7dfd4b9366e5247181822f6a53d26373ad2082b2eb971dd9e1b9fa57b33', name: 'Юлия Удалова',       role: 'admin'   },
   { login: 'admin',           hash: '83d8d0673134b197da778ab65ad2e32e7326969b56ced2e0c2ad04053f208512', name: 'Администратор',       role: 'admin'   },
   { login: 'manager',         hash: '5ef30c8336cc12f228a986ca1711d10795b9271563ab088b3985f9663fd0c27e', name: 'Менеджер',            role: 'manager' },
   { login: 'sales',           hash: 'aa13d01cac384573890f621e3f4be441a765522d0b323ed3210dc2f1c276dcab', name: 'Отдел продаж',        role: 'manager' },
   { login: 'marketing',       hash: '3ca030d85fc3747b195b3024df90e0313fc6e78682422aeef81902a378ef7816', name: 'Отдел маркетинга',   role: 'manager' },
-  { login: 'a.ibragimova',    hash: 'c94e0e5bd50b88351a2f9a2eecf353931045e1b6d6ef7d8513c48b14b7cdc629', name: 'Алина Ибрагимова',   role: 'manager' },
 ];
 
 /* Актуальный список — начинаем с локального, потом Firebase дополнит */
