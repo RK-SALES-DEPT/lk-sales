@@ -158,7 +158,7 @@
 
     /* TOOLS GRID */
     .tools-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
-    .tool-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 24px 20px 20px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; transition: border-color .18s, box-shadow .18s, transform .18s; height: 100%; box-sizing: border-box; }
+    .tool-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 24px 20px 72px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; transition: border-color .18s, box-shadow .18s, transform .18s; box-sizing: border-box; }
     .tool-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:3px 3px 0 0; opacity:0; transition:opacity .18s; }
     .tool-card.t-blue::after  { background: var(--blue); }
     .tool-card.t-green::after { background: var(--ok); }
@@ -183,9 +183,9 @@
     .tag-amber { background:rgba(160,106,0,0.09);  color:#A06A00; }
     .tool-title { font-size:17px; font-weight:800; letter-spacing:-0.3px; margin-bottom:6px; }
     .tool-desc  { font-size:12px; font-weight:500; color:var(--muted); line-height:1.65; }
-    .tool-body { }
-    .tool-divider { height:1px; background:var(--border); margin-top:auto; }
-    .tool-footer { display:flex; align-items:center; flex-wrap:wrap; }
+    
+    .tool-divider { height:1px; background:var(--border); position:absolute; bottom:48px; left:20px; right:20px; }
+    .tool-footer { display:flex; align-items:center; flex-wrap:wrap; gap:6px; position:absolute; bottom:18px; left:20px; right:20px; }
     .tool-feature { font-size:11px; font-weight:600; color:var(--muted); }
     .tool-feature + .tool-feature::before { content:'·'; margin:0 5px; color:var(--border); font-size:14px; }
 
